@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Навигатор ЕГЭ и ОГЭ | Подготовка к экзаменам</title>
+    <meta
+      name="description"
+      content="Тренажер для подготовки к ОГЭ и ЕГЭ: каталог заданий, подборка прототипов и PDF для печати."
+    >
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" href="lib/katex/katex.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar" aria-label="Главная навигация">
+        <a class="brand" href="#top" aria-label="Навигатор ЕГЭ и ОГЭ">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span>Навигатор экзаменов</span>
+        </a>
+        <div class="topbar__links">
+          <a href="#subjects">Математика</a>
+          <a href="#catalog">ОГЭ и ЕГЭ</a>
+          <a href="#print">PDF и печать</a>
+          <a href="#specialists">Репетиторы</a>
+          <a href="cabinet.html">Личный кабинет</a>
+        </div>
+      </nav>
+
+      <section class="hero__grid" id="top">
+        <div class="hero__content">
+          <p class="eyebrow">Банк прототипов по математике</p>
+          <h1>Выбирайте ОГЭ или ЕГЭ, отмечайте прототипы и собирайте PDF.</h1>
+          <p class="hero__lead">
+            В ОГЭ доступно 25 номеров, в ЕГЭ доступно 19 номеров.
+            Учитель может быстро собрать лист из нужных прототипов и распечатать его.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#catalog">Выбрать экзамен</a>
+            <a class="button button--ghost" href="#print">Открыть PDF-лист</a>
+          </div>
+        </div>
+
+        <aside class="exam-card" aria-label="Статистика подготовки">
+          <div class="exam-card__header">
+            <span>Сегодня</span>
+            <strong>42 мин</strong>
+          </div>
+          <div class="progress-ring" aria-hidden="true">
+            <span>78%</span>
+          </div>
+          <p>Структура банка по математике</p>
+          <div class="mini-bars" aria-label="Прогресс по разделам">
+            <span style="--value: 100%">ОГЭ: 25 номеров</span>
+            <span style="--value: 76%">ЕГЭ: 19 номеров</span>
+            <span style="--value: 100%">PDF и печать</span>
+          </div>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="section subjects" id="subjects">
+        <div class="section__heading">
+          <p class="eyebrow">Предмет</p>
+          <h2>Сейчас сайт работает только с математикой</h2>
+          <p>
+            Это упрощает базу и интерфейс: все задачи относятся к математике,
+            а главный выбор идет по экзамену и номеру задания.
+          </p>
+        </div>
+        <div class="subject-grid">
+          <article class="subject-card">
+            <span>М</span>
+            <h3>Математика ОГЭ</h3>
+            <p>25 номеров: краткие ответы в первой части и полные решения во второй.</p>
+          </article>
+          <article class="subject-card">
+            <span>Е</span>
+            <h3>Математика ЕГЭ</h3>
+            <p>19 номеров с отдельной базой прототипов и тем же механизмом подбора.</p>
+          </article>
+          <article class="subject-card">
+            <span>2</span>
+            <h3>Краткие и полные ответы</h3>
+            <p>Для каждого экзамена номера разделяются на задания с кратким ответом и полным решением.</p>
+          </article>
+          <article class="subject-card">
+            <span>PDF</span>
+            <h3>Своя подборка</h3>
+            <p>Отмечайте прототипы галочками и сохраняйте готовый лист через печать в PDF.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="catalog">
+        <div>
+          <p class="eyebrow" id="catalogEyebrow">Номера ОГЭ</p>
+          <div class="exam-switch" id="examSwitch" aria-label="Выбор экзамена"></div>
+          <h2 id="catalogTitle">Выберите номер задания от 1 до 25</h2>
+          <p id="catalogDescription">
+            После выбора номера справа появятся все прототипы из базы. Отметьте галочками
+            те задания, которые нужно добавить в PDF или распечатать.
+          </p>
+        </div>
+        <div class="catalog-panel">
+          <div class="number-grid" id="taskNumberGrid" aria-label="Номера заданий"></div>
+          <div class="prototype-list" id="prototypeList"></div>
+        </div>
+      </section>
+
+      <section class="section print-builder" id="print">
+        <div class="section__heading">
+          <p class="eyebrow">PDF и печать</p>
+          <h2>Соберите лист из выбранных прототипов</h2>
+          <p>
+            Галочками отметьте прототипы в разделе выше. Затем можно распечатать лист
+            или в окне печати выбрать «Сохранить в HTML».
+          </p>
+        </div>
+
+        <div class="print-panel">
+          <form class="print-controls" id="printControls">
+            <div class="selected-summary" id="selectedSummary">Пока ничего не выбрано</div>
+            <div class="selected-list" id="selectedList"></div>
+            <button class="button button--primary" id="generateRandomVariant" type="button">
+              Случайный вариант
+            </button>
+            <label class="checkbox">
+              <input type="checkbox" id="includeAnswers" name="includeAnswers">
+              <span>Добавить ответы и решения</span>
+            </label>
+            <button class="button button--primary" id="downloadWorksheet" type="button">
+              Открыть HTML / PDF
+            </button>
+            <button class="button button--ghost" id="downloadHtmlWorksheet" type="button">
+              Скачать HTML
+            </button>
+            <button class="button button--ghost" id="printWorksheet" type="button">
+              Распечатать
+            </button>
+            <button class="button button--ghost" id="clearSelection" type="button">
+              Очистить выбор
+            </button>
+          </form>
+
+          <article class="worksheet" id="worksheet">
+            <div class="worksheet__header">
+              <div>
+                <p class="eyebrow">Навигатор экзаменов</p>
+                <h3 id="worksheetTitle">Лист заданий</h3>
+              </div>
+              <span id="worksheetCount"></span>
+            </div>
+            <div class="worksheet__tasks" id="worksheetTasks"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section variants" id="variants">
+        <div class="section__heading">
+          <p class="eyebrow">Варианты</p>
+          <h2>Полные пробники для контроля результата</h2>
+        </div>
+        <div class="variant-grid">
+          <article>
+            <span>Базовый</span>
+            <h3>Диагностика за 40 минут</h3>
+            <p>12 заданий, чтобы быстро найти пробелы перед началом подготовки.</p>
+          </article>
+          <article>
+            <span>Экзамен</span>
+            <h3>Полный вариант экзамена</h3>
+            <p>Формат с таймером, первичными баллами и рекомендациями после сдачи.</p>
+          </article>
+          <article>
+            <span>Повторение</span>
+            <h3>Работа над ошибками</h3>
+            <p>Автоматическая подборка похожих заданий по темам, где были ошибки.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section specialists" id="specialists">
+        <div class="section__heading">
+          <p class="eyebrow">Рекламный раздел</p>
+          <h2>Сообщество рекомендует</h2>
+          <p>
+            Здесь можно размещать анкеты преподавателей, которые помогают готовиться к ОГЭ и ЕГЭ.
+            В каждой карточке есть фото, направление, краткое описание и Telegram для связи.
+          </p>
+        </div>
+        <div class="specialist-grid">
+          <article class="specialist-card">
+            <div class="specialist-card__photo" aria-label="Фото преподавателя">
+              <span>АС</span>
+            </div>
+            <div class="specialist-card__body">
+              <span class="specialist-card__badge">Математика ОГЭ</span>
+              <h3>Анна Смирнова</h3>
+              <p>
+                Готовит учеников 8-9 классов к ОГЭ, помогает закрыть пробелы по алгебре
+                и геометрии, собирает индивидуальные домашние работы.
+              </p>
+              <a class="specialist-card__contact" href="https://t.me/math_mentor" target="_blank" rel="noopener">
+                Telegram: @math_mentor
+              </a>
+            </div>
+          </article>
+
+          <article class="specialist-card specialist-card--featured">
+            <div class="specialist-card__photo" aria-label="Фото преподавателя">
+              <span>ИР</span>
+            </div>
+            <div class="specialist-card__body">
+              <span class="specialist-card__badge">ЕГЭ профиль</span>
+              <h3>Илья Романов</h3>
+              <p>
+                Работает с профильной математикой ЕГЭ: параметры, планиметрия, стереометрия
+                и развернутые решения с понятной системой проверки.
+              </p>
+              <a class="specialist-card__contact" href="https://t.me/ege_math_pro" target="_blank" rel="noopener">
+                Telegram: @ege_math_pro
+              </a>
+            </div>
+          </article>
+
+          <article class="specialist-card">
+            <div class="specialist-card__photo" aria-label="Фото преподавателя">
+              <span>МВ</span>
+            </div>
+            <div class="specialist-card__body">
+              <span class="specialist-card__badge">ОГЭ и база ЕГЭ</span>
+              <h3>Мария Волкова</h3>
+              <p>
+                Специализируется на спокойной подготовке с нуля: дроби, уравнения,
+                текстовые задачи, геометрия и регулярный контроль прогресса.
+              </p>
+              <a class="specialist-card__contact" href="https://t.me/oge_math_help" target="_blank" rel="noopener">
+                Telegram: @oge_math_help
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section teacher" id="teacher">
+        <div class="teacher__card">
+          <p class="eyebrow">Учителю</p>
+          <h2>Классы, домашние работы и статистика</h2>
+          <p>
+            Откройте демонстрационный кабинет: добавляйте учеников, назначайте домашние работы,
+            публикуйте материалы по темам и переписывайтесь с учениками в одном месте.
+          </p>
+          <a class="button button--primary" href="cabinet.html">Открыть личный кабинет</a>
+        </div>
+      </section>
+    </main>
+
+    <div class="prototype-overlay" id="prototypeOverlay" aria-hidden="true">
+      <div class="prototype-overlay__backdrop" data-close-overlay></div>
+      <section class="prototype-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+        <header class="prototype-overlay__top">
+          <div>
+            <p class="eyebrow">Прототипы задания</p>
+            <h2 id="overlayTitle">Задание</h2>
+          </div>
+          <div class="prototype-overlay__actions">
+            <a class="button button--ghost" href="#print" data-close-overlay>К выбранным</a>
+            <button class="button button--primary" id="closeOverlay" type="button">Закрыть</button>
+          </div>
+        </header>
+        <div class="prototype-overlay__content" id="overlayPrototypeList"></div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <p>Навигатор экзаменов. Учебный прототип для собственного банка заданий.</p>
+      <a href="#top">Наверх</a>
+    </footer>
+
+    <script>window.OGE_TASKS = []; window.EGE_TASKS = [];</script>
+    <script src="tasks/task-01.js"></script>
+    <script src="tasks/task-02.js"></script>
+    <script src="tasks/task-03.js"></script>
+    <script src="tasks/task-04.js"></script>
+    <script src="tasks/task-05.js"></script>
+    <script src="tasks/task-06.js"></script>
+    <script src="tasks/task-07.js"></script>
+    <script src="tasks/task-08.js"></script>
+    <script src="tasks/task-09.js"></script>
+    <script src="tasks/task-10.js"></script>
+    <script src="tasks/task-11.js"></script>
+    <script src="tasks/task-12.js"></script>
+    <script src="tasks/task-13.js"></script>
+    <script src="tasks/task-14.js"></script>
+    <script src="tasks/task-15.js"></script>
+    <script src="tasks/task-16.js"></script>
+    <script src="tasks/task-17.js"></script>
+    <script src="tasks/task-18.js"></script>
+    <script src="tasks/task-19.js"></script>
+    <script src="tasks/task-20.js"></script>
+    <script src="tasks/task-21.js"></script>
+    <script src="tasks/task-22.js"></script>
+    <script src="tasks/task-23.js"></script>
+    <script src="tasks/task-24.js"></script>
+    <script src="tasks/task-25.js"></script>
+    <script src="ege-tasks/task-01.js"></script>
+    <script src="ege-tasks/task-02.js"></script>
+    <script src="ege-tasks/task-03.js"></script>
+    <script src="ege-tasks/task-04.js"></script>
+    <script src="ege-tasks/task-05.js"></script>
+    <script src="ege-tasks/task-06.js"></script>
+    <script src="ege-tasks/task-07.js"></script>
+    <script src="ege-tasks/task-08.js"></script>
+    <script src="ege-tasks/task-09.js"></script>
+    <script src="ege-tasks/task-10.js"></script>
+    <script src="ege-tasks/task-11.js"></script>
+    <script src="ege-tasks/task-12.js"></script>
+    <script src="ege-tasks/task-13.js"></script>
+    <script src="ege-tasks/task-14.js"></script>
+    <script src="ege-tasks/task-15.js"></script>
+    <script src="ege-tasks/task-16.js"></script>
+    <script src="ege-tasks/task-17.js"></script>
+    <script src="ege-tasks/task-18.js"></script>
+    <script src="ege-tasks/task-19.js"></script>
+    <script src="image-data.js"></script>
+    <script src="lib/katex/katex.min.js"></script>
+    <script src="exam-builder.js"></script>
+  </body>
+</html>
