@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Личный кабинет | Навигатор экзаменов</title>
+    <meta
+      name="description"
+      content="Личный кабинет репетитора и ученика: домашние работы, учебные материалы и сообщения."
+    >
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="cabinet.css">
+  </head>
+  <body>
+    <header class="portal-topbar">
+      <a class="portal-brand" href="index.html" aria-label="Вернуться на главную">
+        <span class="portal-brand__mark" aria-hidden="true"></span>
+        <span>
+          <strong>Навигатор экзаменов</strong>
+          <small>Личный кабинет</small>
+        </span>
+      </a>
+      <div class="portal-role-switch" aria-label="Демонстрационный режим кабинета">
+        <button class="portal-role-switch__button is-active" type="button" data-role-switch="teacher">
+          Репетитор
+        </button>
+        <button class="portal-role-switch__button" type="button" data-role-switch="student">
+          Ученик
+        </button>
+      </div>
+      <a class="portal-home-link" href="index.html">На главную</a>
+    </header>
+
+    <main id="cabinetApp"></main>
+
+    <footer class="portal-footer">
+      <p>Демонстрационный кабинет. Данные пока сохраняются только в этом браузере.</p>
+      <a href="index.html">Вернуться к банку заданий</a>
+    </footer>
+
+    <script src="cabinet.js"></script>
+  </body>
+</html>

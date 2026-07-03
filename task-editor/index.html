@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Редактор базы заданий | Навигатор экзаменов</title>
+    <meta
+      name="description"
+      content="Локальный редактор базы заданий для ОГЭ и ЕГЭ по математике."
+    >
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="../lib/katex/katex.min.css">
+    <link rel="stylesheet" href="editor.css">
+  </head>
+  <body>
+    <header class="editor-hero">
+      <nav class="editor-nav" aria-label="Главная навигация">
+        <a class="brand" href="index.html" aria-label="На главную">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span>Навигатор экзаменов</span>
+        </a>
+        <div class="editor-nav__links">
+          <a href="index.html">Главная</a>
+        </div>
+      </nav>
+
+      <section class="editor-hero__content">
+        <p class="eyebrow">Редактор базы</p>
+        <h1>Добавляйте задания через форму, а не вручную в коде.</h1>
+        <p>
+          Выберите экзамен и номер задания, заполните поля, проверьте предпросмотр
+          и скачайте готовый файл базы. Это снижает риск сломать кавычки, запятые,
+          номера прототипов и математические формулы.
+        </p>
+      </section>
+    </header>
+
+    <main class="editor-layout">
+      <aside class="editor-panel editor-panel--sticky">
+        <h2>Куда добавить</h2>
+        <label>
+          Экзамен
+          <select id="examSelect">
+            <option value="oge">ОГЭ</option>
+            <option value="ege">ЕГЭ</option>
+          </select>
+        </label>
+        <label>
+          Номер задания
+          <select id="taskNumberSelect"></select>
+        </label>
+        <label>
+          Шаблон задания
+          <select id="templateSelect">
+            <option value="expression">Выражение или формула</option>
+            <option value="choice">Задача с вариантами ответа</option>
+            <option value="image-choice">Задача с картинкой</option>
+            <option value="statement">Утверждение</option>
+            <option value="long">Задача с полным решением</option>
+          </select>
+        </label>
+
+        <div class="task-file-card">
+          <span>Файл для замены</span>
+          <strong id="targetFileName">tasks/task-06.js</strong>
+          <p id="taskStats">В базе найдено 0 заданий.</p>
+        </div>
+
+        <div class="editor-actions">
+          <button class="button button--primary" id="addTaskButton" type="button">Добавить в файл</button>
+          <button class="button button--ghost" id="downloadFileButton" type="button">Скачать обновленный файл</button>
+          <button class="button button--ghost" id="copyTaskButton" type="button">Скопировать объект</button>
+        </div>
+        <p class="editor-note">
+          Браузер не может сам заменить файл в папке проекта. После скачивания
+          положите новый файл вместо старого файла с тем же именем.
+        </p>
+      </aside>
+
+      <section class="editor-workspace">
+        <form class="editor-form" id="taskForm">
+          <div class="form-section">
+            <div>
+              <p class="eyebrow">Основное</p>
+              <h2>Описание задания</h2>
+            </div>
+            <label>
+              Заголовок раздела
+              <input id="titleInput" name="title" type="text" placeholder="Например: Дроби и степени">
+            </label>
+            <label>
+              Группа внутри номера
+              <input id="groupInput" name="task_group" type="number" min="1" step="1" value="1">
+            </label>
+            <label>
+              Фраза после «Задание N.»
+              <input id="promptInput" name="prompt" type="text" placeholder="Например: Найдите значение выражения.">
+            </label>
+          </div>
+
+          <div class="form-section" data-template-block="choice image-choice long">
+            <div>
+              <p class="eyebrow">Текст</p>
+              <h2>Условие</h2>
+            </div>
+            <label>
+              Вступление перед картинкой или вопросом
+              <textarea id="introInput" name="intro" rows="3" placeholder="Например: На координатной прямой отмечено число a."></textarea>
+            </label>
+            <label>
+              Основной вопрос
+              <textarea id="questionTextInput" name="question_text" rows="3" placeholder="Например: Какое из утверждений является верным?"></textarea>
+            </label>
+          </div>
+
+          <div class="form-section" data-template-block="expression statement long">
+            <div>
+              <p class="eyebrow">Формула</p>
+              <h2>Математическая запись</h2>
+            </div>
+            <label>
+              Простая запись или обычный текст
+              <textarea id="questionRawInput" name="question_raw" rows="3" placeholder="Например: 3/4 · 6/5"></textarea>
+            </label>
+            <label>
+              KaTeX-формула для красивого отображения
+              <textarea id="expressionInput" name="expression" rows="3" placeholder="Например: \frac{3}{4}\cdot\frac{6}{5}"></textarea>
+            </label>
+            <div class="hint-grid">
+              <button type="button" data-insert-formula="\\frac{a}{b}">Дробь</button>
+              <button type="button" data-insert-formula="x^{2}">Степень</button>
+              <button type="button" data-insert-formula="\\sqrt{x}">Корень</button>
+              <button type="button" data-insert-formula="\\begin{cases} x>0 \\\\ x<5 \\end{cases}">Система</button>
+            </div>
+          </div>
+
+          <div class="form-section" data-template-block="choice image-choice">
+            <div>
+              <p class="eyebrow">Ответы</p>
+              <h2>Варианты ответа</h2>
+            </div>
+            <label>
+              Варианты, каждый с новой строки
+              <textarea id="optionsInput" name="options" rows="5" placeholder="1/2&#10;3/4&#10;5/6&#10;7/8"></textarea>
+            </label>
+          </div>
+
+          <div class="form-section" data-template-block="image-choice">
+            <div>
+              <p class="eyebrow">Картинка</p>
+              <h2>Изображение</h2>
+            </div>
+            <label>
+              Путь к картинке
+              <input id="imageInput" name="image" type="text" placeholder="images/task-07/task-07-022.png">
+            </label>
+            <label>
+              Описание картинки
+              <input id="imageAltInput" name="image_alt" type="text" placeholder="Координатная прямая с отмеченной точкой A">
+            </label>
+            <p class="editor-note">
+              Картинку сначала положите в папку `tasks/images/task-XX/`, а в поле
+              укажите путь вида `images/task-XX/имя-файла.png`.
+            </p>
+          </div>
+
+          <div class="form-section">
+            <div>
+              <p class="eyebrow">Проверка</p>
+              <h2>Ответ и решение</h2>
+            </div>
+            <label>
+              Ответ
+              <input id="answerInput" name="answer" type="text" placeholder="Например: 7,5">
+            </label>
+            <label>
+              Решение или пояснение
+              <textarea id="solutionInput" name="solution" rows="4" placeholder="Краткое решение для раскрывающегося блока."></textarea>
+            </label>
+          </div>
+        </form>
+
+        <aside class="preview-panel">
+          <div class="preview-panel__top">
+            <div>
+              <p class="eyebrow">Предпросмотр</p>
+              <h2>Как задание будет выглядеть</h2>
+            </div>
+            <span id="validationStatus">Заполните форму</span>
+          </div>
+          <div class="task-preview" id="taskPreview"></div>
+          <div class="pending-panel">
+            <h3>Добавлено за эту сессию</h3>
+            <div id="pendingList" class="pending-list"></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script>window.OGE_TASKS = []; window.EGE_TASKS = [];</script>
+    <script src="../tasks/task-01.js"></script>
+    <script src="../tasks/task-02.js"></script>
+    <script src="../tasks/task-03.js"></script>
+    <script src="../tasks/task-04.js"></script>
+    <script src="../tasks/task-05.js"></script>
+    <script src="../tasks/task-06.js"></script>
+    <script src="../tasks/task-07.js"></script>
+    <script src="../tasks/task-08.js"></script>
+    <script src="../tasks/task-09.js"></script>
+    <script src="../tasks/task-10.js"></script>
+    <script src="../tasks/task-11.js"></script>
+    <script src="../tasks/task-12.js"></script>
+    <script src="../tasks/task-13.js"></script>
+    <script src="../tasks/task-14.js"></script>
+    <script src="../tasks/task-15.js"></script>
+    <script src="../tasks/task-16.js"></script>
+    <script src="../tasks/task-17.js"></script>
+    <script src="../tasks/task-18.js"></script>
+    <script src="../tasks/task-19.js"></script>
+    <script src="../tasks/task-20.js"></script>
+    <script src="../tasks/task-21.js"></script>
+    <script src="../tasks/task-22.js"></script>
+    <script src="../tasks/task-23.js"></script>
+    <script src="../tasks/task-24.js"></script>
+    <script src="../tasks/task-25.js"></script>
+    <script src="../ege-tasks/task-01.js"></script>
+    <script src="../ege-tasks/task-02.js"></script>
+    <script src="../ege-tasks/task-03.js"></script>
+    <script src="../ege-tasks/task-04.js"></script>
+    <script src="../ege-tasks/task-05.js"></script>
+    <script src="../ege-tasks/task-06.js"></script>
+    <script src="../ege-tasks/task-07.js"></script>
+    <script src="../ege-tasks/task-08.js"></script>
+    <script src="../ege-tasks/task-09.js"></script>
+    <script src="../ege-tasks/task-10.js"></script>
+    <script src="../ege-tasks/task-11.js"></script>
+    <script src="../ege-tasks/task-12.js"></script>
+    <script src="../ege-tasks/task-13.js"></script>
+    <script src="../ege-tasks/task-14.js"></script>
+    <script src="../ege-tasks/task-15.js"></script>
+    <script src="../ege-tasks/task-16.js"></script>
+    <script src="../ege-tasks/task-17.js"></script>
+    <script src="../ege-tasks/task-18.js"></script>
+    <script src="../ege-tasks/task-19.js"></script>
+    <script src="../lib/katex/katex.min.js"></script>
+    <script src="editor.js"></script>
+  </body>
+</html>

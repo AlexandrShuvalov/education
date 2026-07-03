@@ -1,0 +1,2539 @@
+/* ===== Базовая тема =====
+   Цвета, тени, радиусы и общие настройки всей страницы. */
+:root {
+  --bg: #f6f1e8;
+  --bg-deep: #19251f;
+  --card: #fffaf0;
+  --ink: #18231e;
+  --muted: #657069;
+  --line: #ded2bd;
+  --accent: #d35b35;
+  --accent-2: #246b5f;
+  --sun: #f2bc57;
+  --good: #2f8b57;
+  --shadow: 0 24px 70px rgba(31, 35, 30, 0.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 8%, rgba(242, 188, 87, 0.34), transparent 24rem),
+    radial-gradient(circle at 90% 0%, rgba(36, 107, 95, 0.18), transparent 28rem),
+    linear-gradient(180deg, #fffaf0 0%, var(--bg) 34%, #efe4d0 100%);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+body.overlay-open {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* ===== Первый экран и шапка =====
+   Главный экран сайта, верхнее меню, логотип и навигационные ссылки. */
+.hero {
+  min-height: 100vh;
+  padding: 28px clamp(18px, 4vw, 64px) 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -8rem -16rem auto;
+  width: 34rem;
+  height: 34rem;
+  border-radius: 45%;
+  background: rgba(211, 91, 53, 0.14);
+  transform: rotate(21deg);
+  z-index: -1;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  border: 1px solid rgba(25, 37, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.76);
+  backdrop-filter: blur(18px);
+}
+
+.brand,
+.topbar__links {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand__mark {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-image: url("icon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.topbar__links {
+  gap: 8px;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+}
+
+.topbar__links a {
+  padding: 10px 13px;
+  border-radius: 999px;
+}
+
+.topbar__links a:hover {
+  color: var(--ink);
+  background: rgba(36, 107, 95, 0.1);
+}
+
+/* ===== Главный промо-блок =====
+   Сетка первого экрана, крупные заголовки, вводный текст и кнопки. */
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 96px);
+  max-width: 1180px;
+  margin: 92px auto 0;
+}
+
+.eyebrow {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 780px;
+  margin-bottom: 24px;
+  font-size: clamp(46px, 8vw, 92px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.hero__lead,
+.section__heading p,
+.split p,
+.practice__copy p,
+.teacher__card p {
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.hero__lead {
+  max-width: 650px;
+}
+
+.hero__actions,
+.trainer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button--primary {
+  color: #fffaf0;
+  background: var(--accent-2);
+  box-shadow: 0 16px 34px rgba(36, 107, 95, 0.25);
+}
+
+.button--ghost {
+  color: var(--ink);
+  background: rgba(25, 37, 31, 0.08);
+}
+
+/* ===== Карточки и декоративные панели =====
+   Общий внешний вид больших карточек, карточки экзамена и мини-графика. */
+.exam-card,
+.catalog-panel,
+.trainer,
+.teacher__card,
+.specialist-card,
+.variant-grid article,
+.subject-card {
+  border: 1px solid rgba(25, 37, 31, 0.1);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 250, 240, 0.83);
+  box-shadow: var(--shadow);
+}
+
+.exam-card {
+  justify-self: end;
+  width: min(100%, 430px);
+  padding: 28px;
+  transform: rotate(2deg);
+  animation: floatIn 800ms ease both;
+}
+
+.exam-card__header {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.exam-card__header strong {
+  color: var(--ink);
+}
+
+.progress-ring {
+  display: grid;
+  place-items: center;
+  width: 220px;
+  height: 220px;
+  margin: 34px auto 22px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--card) 0 58%, transparent 59%),
+    conic-gradient(var(--accent-2) 0 78%, rgba(36, 107, 95, 0.14) 78% 100%);
+}
+
+.progress-ring span {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+.exam-card p {
+  text-align: center;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.mini-bars {
+  display: grid;
+  gap: 14px;
+  margin-top: 26px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+}
+
+.mini-bars span {
+  position: relative;
+  padding-top: 12px;
+}
+
+.mini-bars span::before,
+.mini-bars span::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.mini-bars span::before {
+  width: 100%;
+  background: rgba(36, 107, 95, 0.12);
+}
+
+.mini-bars span::after {
+  width: var(--value);
+  background: var(--accent);
+}
+
+/* ===== Обычные секции страницы =====
+   Общие отступы секций, карточки предметов и двухколоночные блоки. */
+.section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 86px clamp(18px, 4vw, 36px);
+}
+
+.section__heading {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.subject-card {
+  min-height: 188px;
+  padding: 22px;
+  box-shadow: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.subject-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 42px rgba(31, 35, 30, 0.12);
+}
+
+.subject-card span {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 15px;
+  color: #fffaf0;
+  background: var(--accent-2);
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: 900;
+}
+
+.subject-card p,
+.task-card p,
+.specialist-card p,
+.variant-grid p {
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 1.55;
+}
+
+.split,
+.practice {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(320px, 1fr);
+  align-items: start;
+  gap: clamp(28px, 6vw, 70px);
+}
+
+.catalog-panel,
+.trainer {
+  padding: 24px;
+}
+
+/* ===== Каталог типов заданий =====
+   Вкладки, список тем и карточки заданий в каталоге. */
+.catalog-panel__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  color: #fffaf0;
+  border-color: var(--accent-2);
+  background: var(--accent-2);
+}
+
+.task-list {
+  display: grid;
+  gap: 12px;
+}
+
+.task-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: rgba(246, 241, 232, 0.8);
+}
+
+.task-card__number {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  color: #fffaf0;
+  background: var(--bg-deep);
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: 900;
+}
+
+.task-card h3 {
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.task-card p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.task-card__count {
+  color: var(--accent);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ===== Рекламные анкеты репетиторов =====
+   Карточки преподавателей с фото, направлением, описанием и Telegram-контактом. */
+.specialists {
+  padding-top: 46px;
+}
+
+.specialist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.specialist-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.96), rgba(255, 255, 255, 0.9)),
+    var(--card);
+  box-shadow: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.specialist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 22px 42px rgba(31, 35, 30, 0.12);
+}
+
+.specialist-card--featured {
+  border-color: rgba(36, 107, 95, 0.26);
+  box-shadow: 0 20px 46px rgba(36, 107, 95, 0.12);
+}
+
+.specialist-card__photo {
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(242, 188, 87, 0.34), transparent 5.5rem),
+    linear-gradient(135deg, rgba(25, 37, 31, 0.95), rgba(36, 107, 95, 0.92));
+}
+
+.specialist-card__photo span {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border: 1px solid rgba(255, 250, 240, 0.48);
+  border-radius: 50%;
+  color: #fffaf0;
+  background: rgba(255, 250, 240, 0.12);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.specialist-card__body {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+}
+
+.specialist-card__badge {
+  width: fit-content;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: var(--accent-2);
+  background: rgba(36, 107, 95, 0.1);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.specialist-card h3 {
+  margin: 0;
+  font-size: clamp(24px, 2.3vw, 34px);
+}
+
+.specialist-card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.specialist-card__contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: var(--accent-2);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* ===== Выбор номера задания ОГЭ =====
+   Сетка карточек 1-25, активная карточка и счетчик прототипов. */
+.exam-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0 18px;
+  padding: 6px;
+  border: 1px solid rgba(25, 37, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(25, 37, 31, 0.08);
+}
+
+.exam-switch__button {
+  min-width: 86px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.exam-switch__button.is-active {
+  color: #fffaf0;
+  background: var(--accent-2);
+  box-shadow: 0 10px 20px rgba(36, 107, 95, 0.22);
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.number-card {
+  display: grid;
+  gap: 6px;
+  min-height: 104px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  background: rgba(246, 241, 232, 0.8);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.number-card:hover,
+.number-card.is-active {
+  transform: translateY(-3px);
+  border-color: var(--accent-2);
+  background: rgba(36, 107, 95, 0.12);
+}
+
+.number-card strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.number-card span,
+.number-card small,
+.prototype-card__meta,
+.selected-summary,
+.empty-state {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.number-card span {
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.number-card small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.number-card--wide {
+  grid-column: span 2;
+}
+
+/* ===== Список прототипов на странице =====
+   Карточки прототипов, метаданные, чекбоксы и пустое состояние. */
+.prototype-list {
+  display: grid;
+  gap: 14px;
+}
+
+.prototype-card {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.28fr) 1fr;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(246, 241, 232, 0.66);
+}
+
+.prototype-card__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--accent-2);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.prototype-card__check input {
+  width: 19px;
+  height: 19px;
+  margin-top: 1px;
+  accent-color: var(--accent-2);
+}
+
+.prototype-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.prototype-card__meta span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(25, 37, 31, 0.08);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.prototype-card h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.prototype-card p {
+  margin-bottom: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.selected-summary,
+.empty-state {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: rgba(242, 188, 87, 0.2);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.empty-state__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.empty-state__links button {
+  padding: 8px 10px;
+  border: 1px solid rgba(36, 107, 95, 0.24);
+  border-radius: 999px;
+  color: var(--accent-2);
+  background: rgba(255, 250, 240, 0.72);
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.text-group-catalog {
+  display: grid;
+  gap: 22px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+
+.text-group-catalog__header {
+  text-align: center;
+}
+
+.text-group-catalog__header h3 {
+  margin: 4px 0 10px;
+  font-size: clamp(28px, 4vw, 46px);
+}
+
+.text-group-catalog__header p:last-child {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--muted);
+}
+
+.text-topic-grid,
+.text-topic-tabs,
+.text-variant-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.text-topic-card,
+.text-topic-tab,
+.text-variant-pills a,
+.text-group-catalog__open {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: 900;
+}
+
+.text-topic-card {
+  display: grid;
+  gap: 3px;
+  min-width: 190px;
+  padding: 14px 20px;
+  color: var(--ink);
+  background: rgba(25, 37, 31, 0.08);
+  text-align: center;
+}
+
+.text-topic-card small {
+  color: var(--muted);
+}
+
+.text-topic-card:hover,
+.text-topic-tab.is-active {
+  color: #fffaf0;
+  background: var(--accent-2);
+}
+
+.text-group-catalog__open {
+  justify-self: center;
+  padding: 14px 22px;
+  color: #fffaf0;
+  background: var(--accent-2);
+}
+
+.text-group-browser {
+  display: grid;
+  gap: 24px;
+}
+
+.text-group-browser__header {
+  margin-bottom: 0;
+}
+
+.text-topic-tab {
+  padding: 12px 18px;
+  color: var(--accent-2);
+  background: rgba(36, 107, 95, 0.12);
+}
+
+.text-group-browser__title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(26px, 3vw, 38px);
+}
+
+.text-variant-pills a {
+  padding: 10px 18px;
+  color: var(--muted);
+  background: rgba(25, 37, 31, 0.08);
+  text-decoration: none;
+}
+
+.text-case-list {
+  display: grid;
+  gap: 28px;
+}
+
+.text-case-card {
+  display: grid;
+  gap: 16px;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+
+.text-case-card__header {
+  display: grid;
+  gap: 8px;
+}
+
+.text-case-card__header > span {
+  color: var(--accent);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.text-case-card__header h3 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.text-case-card__select-all,
+.text-case-task__select {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  cursor: pointer;
+}
+
+.text-case-card__select-all {
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--accent-2);
+  background: rgba(36, 107, 95, 0.1);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.text-case-card__select-all input,
+.text-case-task__select input {
+  width: 18px;
+  height: 18px;
+  margin-top: 5px;
+  accent-color: var(--accent-2);
+}
+
+.text-case-card__tasks,
+.plain-case-questions {
+  display: grid;
+  gap: 12px;
+}
+
+.text-case-task {
+  display: grid;
+  gap: 8px;
+}
+
+.text-case-task__content {
+  display: inline;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.34;
+}
+
+.text-case-task__content strong {
+  font-weight: 900;
+}
+
+/* ===== Лист прототипов =====
+   Большой учебный лист: заголовок, группы и варианты. */
+.prototype-sheet {
+  padding: clamp(18px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+
+.prototype-sheet__header {
+  margin-bottom: 24px;
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.prototype-sheet__header h3,
+.prototype-sheet__header p {
+  margin: 0;
+  color: #111;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+.prototype-sheet__header strong {
+  display: block;
+  margin-top: 10px;
+  color: #1618c8;
+  font-size: clamp(24px, 3.2vw, 34px);
+  letter-spacing: 0.08em;
+}
+
+.prototype-sheet__groups {
+  display: grid;
+  gap: 34px;
+}
+
+.prototype-group h4 {
+  margin: 0 0 22px;
+  color: #111;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.prototype-group h4 span {
+  font-weight: 900;
+}
+
+.prototype-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px clamp(18px, 4vw, 44px);
+}
+
+.prototype-sheet--three-columns .prototype-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.prototype-sheet--two-columns .prototype-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.prototype-sheet--one-column .prototype-options {
+  grid-template-columns: 1fr;
+}
+
+.prototype-option {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 10px;
+  align-items: center;
+  color: #111;
+  cursor: pointer;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(24px, 2.8vw, 34px);
+}
+
+.prototype-option--interactive {
+  grid-template-columns: 1fr;
+  cursor: default;
+}
+
+.prototype-option__select {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.prototype-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-2);
+}
+
+.prototype-option--static {
+  grid-template-columns: auto 1fr;
+  cursor: default;
+}
+
+.prototype-option--static .task-answer,
+.prototype-option--interactive .task-answer {
+  grid-column: 1 / -1;
+}
+
+.prototype-option strong {
+  font-weight: 400;
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+/* ===== Специальный формат задания 19 =====
+   Галочка выбирает весь блок из 4 утверждений, утверждения идут по строкам. */
+.prototype-group__selector {
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.prototype-group__selector input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent-2);
+}
+
+.prototype-sheet--statements .prototype-options {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.prototype-sheet--statements .prototype-option {
+  align-items: start;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.25;
+}
+
+.prototype-sheet--statements .prototype-option strong {
+  max-width: 100%;
+}
+
+.prototype-sheet--visual-choice .visual-task-list {
+  display: grid;
+  gap: 26px;
+}
+
+.visual-task {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+  cursor: default;
+}
+
+.visual-task__select {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  cursor: pointer;
+}
+
+.visual-task input {
+  width: 18px;
+  height: 18px;
+  margin-top: 14px;
+  accent-color: var(--accent-2);
+}
+
+.visual-task--static {
+  grid-template-columns: 1fr;
+}
+
+.visual-task__body {
+  display: grid;
+  gap: 8px;
+}
+
+.visual-task__heading {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.28;
+  text-align: left;
+}
+
+.visual-task__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.28;
+}
+
+.visual-task__question {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.28;
+  text-align: left;
+}
+
+.visual-task__image-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.visual-task__image {
+  display: block;
+  width: auto;
+  max-width: min(100%, 760px);
+  max-height: 145px;
+  object-fit: contain;
+}
+
+.visual-task__image.task-image--large {
+  max-width: min(100%, 1284px);
+  max-height: 246px;
+}
+
+.visual-task__options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px 28px;
+}
+
+.answer-table {
+  width: min(360px, 100%);
+  margin: 16px auto 4px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background: #fff;
+}
+
+.answer-table th,
+.answer-table td {
+  width: calc(100% / var(--answer-table-columns, 4));
+  height: 38px;
+  border: 2px solid rgba(25, 37, 31, 0.78);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.answer-table th {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.answer-table td {
+  height: 42px;
+}
+
+.visual-task__option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.visual-task__option strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.2;
+}
+
+.task-case {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+}
+
+.task-case__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.task-case__text {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.32;
+  text-align: justify;
+}
+
+.task-case__image-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.task-case__image {
+  display: block;
+  max-width: min(100%, 720px);
+  max-height: 320px;
+  object-fit: contain;
+}
+
+.task-case__table {
+  width: min(620px, 100%);
+  margin: 4px auto;
+  border-collapse: collapse;
+  background: #fff;
+  table-layout: fixed;
+}
+
+.task-case__table td {
+  border: 1.5px solid rgba(25, 37, 31, 0.62);
+  padding: 8px 10px;
+  font-size: 19px;
+  line-height: 1.22;
+  vertical-align: top;
+}
+
+.task-case__note {
+  font-style: italic;
+}
+
+.visual-task__heading .katex {
+  font-size: 0.9em;
+}
+
+/* ===== Специальный формат заданий 20-25 =====
+   Каждая задача идет отдельной строкой с заголовком "Задание N. Решите задачу." */
+.long-task-list {
+  display: grid;
+  gap: 24px;
+}
+
+.long-task {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+  color: #111;
+  cursor: default;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.long-task__select {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  cursor: pointer;
+}
+
+.long-task--static {
+  grid-template-columns: 1fr;
+  cursor: default;
+}
+
+.long-task input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.48em;
+  accent-color: var(--accent-2);
+}
+
+.long-task__body {
+  display: grid;
+  gap: 10px;
+}
+
+.long-task__title {
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.long-task__text {
+  max-width: 1250px;
+  font-size: clamp(22px, 2.1vw, 30px);
+  line-height: 1.35;
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+.long-task__text .katex,
+.prototype-option strong .katex,
+.selected-item span .katex {
+  font-size: 1em;
+}
+
+.long-task__text .katex-display {
+  margin: 0;
+}
+
+.long-task__image-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.long-task__image {
+  display: block;
+  width: auto;
+  max-width: min(100%, 720px);
+  max-height: 260px;
+  object-fit: contain;
+}
+
+.long-task__image.task-image--large {
+  max-width: min(100%, 1217px);
+  max-height: 439px;
+}
+
+.long-task__options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px 24px;
+  align-items: center;
+  max-width: 1250px;
+}
+
+.long-task__option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  font-size: clamp(20px, 1.8vw, 28px);
+}
+
+.task-option-image-wrap {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.task-option-image {
+  display: block;
+  max-width: 100%;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.selected-item span {
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+.task-inline-note {
+  margin-left: 0.22em;
+  white-space: normal;
+}
+
+/* ===== Математические выражения =====
+   Визуальная отрисовка дробей и вложенных дробей без сторонних библиотек. */
+.math-frac {
+  display: inline-grid;
+  grid-template-rows: auto auto;
+  min-width: 0.9em;
+  margin: 0 0.08em;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1;
+}
+
+.math-frac span:first-child {
+  padding: 0 0.12em 0.08em;
+  border-bottom: 0.08em solid currentColor;
+}
+
+.math-frac span:last-child {
+  padding-top: 0.08em;
+}
+
+.math-frac .math-frac {
+  font-size: 0.74em;
+}
+
+.math-root {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0 0.08em;
+  vertical-align: baseline;
+  line-height: 1;
+}
+
+.math-root__sign {
+  font-size: 1.14em;
+  line-height: 1;
+  transform: translateY(0.03em);
+}
+
+.math-root__value {
+  display: inline-block;
+  padding: 0.02em 0.12em 0;
+  border-top: 0.08em solid currentColor;
+  line-height: 1;
+}
+
+.math-system {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.16em;
+  margin: 0 0.14em;
+  vertical-align: middle;
+}
+
+.math-system__brace {
+  font-size: 2.35em;
+  line-height: 0.95;
+  transform: scaleX(0.72);
+  transform-origin: center;
+}
+
+.math-system__rows {
+  display: inline-grid;
+  gap: 0.08em;
+  line-height: 1.08;
+}
+
+.math-system__rows > span {
+  display: block;
+}
+
+.prototype-solutions {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(47, 139, 87, 0.12);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.prototype-solutions p {
+  margin: 0;
+}
+
+.task-answer {
+  margin-top: 10px;
+  border: 1px solid rgba(36, 107, 95, 0.18);
+  border-radius: 18px;
+  background: rgba(36, 107, 95, 0.055);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.task-answer summary {
+  padding: 11px 14px;
+  color: var(--accent-2);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+  list-style-position: inside;
+}
+
+.task-answer[open] summary {
+  border-bottom: 1px solid rgba(36, 107, 95, 0.14);
+}
+
+.task-answer__content {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.task-answer__content p {
+  margin: 0;
+}
+
+.task-answer__content span {
+  font-weight: 900;
+}
+
+.task-answer__content .katex {
+  font-size: 1em;
+}
+
+/* ===== Подборка для печати =====
+   Панель управления печатью, список выбранных задач и предпросмотр листа. */
+.print-panel {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.42fr) minmax(320px, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.print-controls,
+.worksheet {
+  border: 1px solid rgba(25, 37, 31, 0.1);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 250, 240, 0.83);
+  box-shadow: var(--shadow);
+}
+
+.print-controls {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  position: sticky;
+  top: 20px;
+}
+
+.print-controls label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.print-controls select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  background: var(--card);
+}
+
+.print-controls .checkbox {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.print-controls .checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-2);
+}
+
+.selected-list {
+  display: grid;
+  gap: 10px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.selected-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(25, 37, 31, 0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(246, 241, 232, 0.72);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.selected-item > div {
+  min-width: 0;
+}
+
+.selected-item strong,
+.selected-item span {
+  display: block;
+}
+
+.selected-item strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.selected-item span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-item button {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: var(--accent);
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* ===== Окно прототипов на весь экран =====
+   Модальное окно с затемнением, верхней панелью и прокручиваемым содержимым. */
+.prototype-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+}
+
+.prototype-overlay.is-open {
+  display: block;
+}
+
+.prototype-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(25, 37, 31, 0.48);
+  backdrop-filter: blur(8px);
+}
+
+.prototype-overlay__panel {
+  position: absolute;
+  inset: clamp(10px, 3vw, 34px);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 1px solid rgba(25, 37, 31, 0.16);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: 0 30px 90px rgba(15, 20, 18, 0.3);
+}
+
+.prototype-overlay__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  padding: 18px clamp(18px, 4vw, 34px);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 250, 240, 0.92);
+}
+
+.prototype-overlay__top h2 {
+  margin-bottom: 0;
+  font-size: clamp(30px, 4vw, 48px);
+}
+
+.prototype-overlay__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.prototype-overlay__content {
+  overflow: auto;
+  padding: clamp(18px, 4vw, 42px);
+  background: #fff;
+}
+
+.prototype-overlay .prototype-sheet {
+  max-width: 1160px;
+  min-height: calc(100vh - 190px);
+  margin: 0 auto;
+  box-shadow: 0 24px 70px rgba(31, 35, 30, 0.12);
+}
+
+/* ===== Скрытый PDF-документ =====
+   Технический макет A4 для сохранения/экспорта в PDF. */
+.pdf-document {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  z-index: 1000;
+  width: 794px;
+  min-height: 1123px;
+  padding: 36px;
+  transform: translateX(-50%);
+  color: #111;
+  background: #fff;
+  box-shadow: 0 0 0 9999px rgba(255, 255, 255, 0.92);
+  font-family: Georgia, "Times New Roman", serif;
+  pointer-events: none;
+}
+
+.pdf-document__header {
+  margin-bottom: 28px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 14px;
+}
+
+.pdf-document__header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.pdf-document__header p {
+  margin: 8px 0 0;
+  color: #555;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.pdf-document .prototype-sheet {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+}
+
+.pdf-document .prototype-sheet + .prototype-sheet {
+  margin-top: 34px;
+}
+
+.pdf-document .prototype-sheet__header h3,
+.pdf-document .prototype-sheet__header p {
+  font-size: 32px;
+}
+
+.pdf-document .prototype-sheet__header strong {
+  color: #0000cc;
+  font-size: 28px;
+}
+
+.pdf-document .prototype-group h4 {
+  font-size: 28px;
+}
+
+.pdf-document .prototype-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.pdf-document .prototype-sheet--three-columns .prototype-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pdf-document .prototype-sheet--two-columns .prototype-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pdf-document .prototype-sheet--one-column .prototype-options {
+  grid-template-columns: 1fr;
+}
+
+.pdf-document .prototype-option {
+  grid-template-columns: auto 1fr;
+  font-size: 26px;
+}
+
+.pdf-document .prototype-sheet--statements .prototype-options {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.pdf-document .prototype-sheet--statements .prototype-option {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.pdf-document .prototype-sheet--visual-choice .visual-task-list {
+  gap: 22px;
+}
+
+.pdf-document .visual-task {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.pdf-document .visual-task input {
+  display: none;
+}
+
+.pdf-document .visual-task__title {
+  font-size: 28px;
+}
+
+.pdf-document .visual-task__heading,
+.pdf-document .visual-task__question,
+.pdf-document .visual-task__option strong {
+  font-size: 19px;
+}
+
+.pdf-document .visual-task__heading .katex {
+  font-size: 0.9em;
+}
+
+.pdf-document .visual-task__image {
+  max-width: 560px;
+  max-height: 130px;
+}
+
+.pdf-document .long-task-list {
+  gap: 18px;
+}
+
+.pdf-document .long-task__title {
+  font-size: 24px;
+}
+
+.pdf-document .long-task__text {
+  font-size: 18px;
+  text-align: justify;
+}
+
+.pdf-document .prototype-option input {
+  display: none;
+}
+
+.worksheet-plain-list {
+  display: grid;
+  gap: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.plain-task {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.plain-task__text {
+  margin: 0 0 10px;
+  font-size: 24px;
+  line-height: 1.32;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-align: left;
+}
+
+.plain-task__text strong {
+  font-weight: 900;
+}
+
+.plain-task__image-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 12px;
+}
+
+.plain-task__image {
+  display: block;
+  max-width: min(100%, 620px);
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.plain-task__image.task-image--large {
+  max-width: min(100%, 1048px);
+  max-height: 254px;
+}
+
+.plain-task__options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px 24px;
+  margin-top: 8px;
+}
+
+.plain-task__option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+  font-size: 22px;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.plain-task__option strong {
+  font-weight: 400;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.plain-task__statements {
+  display: grid;
+  gap: 6px;
+}
+
+.plain-task__statements p,
+.plain-task__answer {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.pdf-document .worksheet-plain-list {
+  gap: 14px;
+}
+
+.pdf-document .plain-task__text {
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+.pdf-document .plain-task__option {
+  font-size: 17px;
+}
+
+.pdf-document .plain-task__image {
+  max-width: 520px;
+  max-height: 115px;
+}
+
+.pdf-document .plain-task__image.task-image--large {
+  max-width: min(100%, 879px);
+  max-height: 195px;
+}
+
+.pdf-document .task-case {
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.pdf-document .task-case__title {
+  font-size: 20px;
+}
+
+.pdf-document .task-case__text {
+  font-size: 16px;
+  line-height: 1.24;
+}
+
+.pdf-document .task-case__image {
+  max-width: 520px;
+  max-height: 220px;
+}
+
+.pdf-document .task-case__table {
+  width: 440px;
+}
+
+.pdf-document .task-case__table td {
+  padding: 5px 7px;
+  font-size: 14px;
+}
+
+.pdf-document .plain-case-questions {
+  gap: 8px;
+}
+
+.pdf-document .text-case-task__content {
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+.pdf-document .answer-table,
+.answer-table--plain {
+  width: 300px;
+  margin-top: 10px;
+}
+
+.pdf-document .answer-table th,
+.pdf-document .answer-table td,
+.answer-table--plain th,
+.answer-table--plain td {
+  height: 30px;
+  border-width: 1.5px;
+  font-size: 16px;
+}
+
+/* ===== Предпросмотр подборки =====
+   Внешний вид выбранных заданий перед печатью или сохранением. */
+.worksheet {
+  padding: clamp(22px, 4vw, 36px);
+}
+
+.worksheet__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.worksheet__header h3 {
+  margin-bottom: 0;
+}
+
+.worksheet__header > span {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: var(--bg-deep);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.worksheet__tasks {
+  display: grid;
+  gap: 18px;
+}
+
+.worksheet-task {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(246, 241, 232, 0.66);
+}
+
+.worksheet-task__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+}
+
+.worksheet-task__meta strong {
+  color: var(--accent);
+}
+
+.worksheet-task__question {
+  margin-bottom: 12px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.worksheet-task__answers {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 22px;
+  font-family: Verdana, Geneva, sans-serif;
+  color: var(--ink);
+}
+
+.worksheet-task__solution {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(47, 139, 87, 0.14);
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 1.5;
+}
+
+/* ===== Тренажер =====
+   Стили интерактивной практики: ответы, результат и служебные метки. */
+.practice {
+  align-items: center;
+}
+
+.trainer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+}
+
+.trainer__meta span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(211, 91, 53, 0.1);
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.answer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: rgba(255, 250, 240, 0.74);
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.answer input {
+  margin-top: 3px;
+  accent-color: var(--accent-2);
+}
+
+.trainer__result {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  background: rgba(242, 188, 87, 0.24);
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 1.55;
+}
+
+.trainer__result.is-correct {
+  background: rgba(47, 139, 87, 0.16);
+}
+
+/* ===== Варианты и блок для учителя =====
+   Карточки готовых вариантов, учительская секция и нижняя часть сайта. */
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.variant-grid article {
+  padding: 24px;
+  box-shadow: none;
+}
+
+.variant-grid span {
+  color: var(--accent);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.teacher {
+  padding-bottom: 110px;
+}
+
+.teacher__card {
+  padding: clamp(28px, 6vw, 58px);
+  color: #fffaf0;
+  background:
+    linear-gradient(135deg, rgba(25, 37, 31, 0.96), rgba(36, 107, 95, 0.96)),
+    var(--bg-deep);
+}
+
+.teacher__card p {
+  max-width: 720px;
+  color: rgba(255, 250, 240, 0.76);
+}
+
+.teacher__card .button--primary {
+  color: var(--ink);
+  background: var(--sun);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px clamp(18px, 4vw, 64px);
+  color: rgba(255, 250, 240, 0.72);
+  background: var(--bg-deep);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* ===== Анимации =====
+   Мягкое появление карточек при загрузке страницы. */
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) rotate(0deg);
+  }
+}
+
+/* ===== Адаптация: планшеты =====
+   Перестраивает сетки и панели на экранах до 900px. */
+@media (max-width: 900px) {
+  .topbar,
+  .hero__grid,
+  .split,
+  .practice,
+  .footer {
+    display: block;
+  }
+
+  .topbar__links {
+    display: none;
+  }
+
+  .hero__grid {
+    margin-top: 64px;
+  }
+
+  .exam-card {
+    margin-top: 42px;
+    transform: none;
+  }
+
+  .subject-grid,
+  .specialist-grid,
+  .variant-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .number-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .number-card--wide {
+    grid-column: span 3;
+  }
+
+  .prototype-card {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prototype-sheet--three-columns .prototype-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prototype-sheet--two-columns .prototype-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prototype-sheet--one-column .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-sheet--statements .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-task__options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .long-task__text {
+    max-width: none;
+  }
+
+  .prototype-overlay__top {
+    display: grid;
+  }
+
+  .catalog-panel,
+  .trainer,
+  .print-controls {
+    margin-top: 28px;
+  }
+
+  .print-panel {
+    display: block;
+  }
+
+  .print-controls {
+    position: static;
+  }
+
+  .footer a {
+    display: inline-block;
+    margin-top: 12px;
+  }
+}
+
+/* ===== Адаптация: телефоны =====
+   Делает интерфейс одноколоночным на узких экранах. */
+@media (max-width: 620px) {
+  .hero {
+    padding-top: 16px;
+  }
+
+  h1 {
+    font-size: 44px;
+  }
+
+  h2 {
+    font-size: 34px;
+  }
+
+  .subject-grid,
+  .specialist-grid,
+  .variant-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-card {
+    grid-template-columns: 1fr;
+  }
+
+  .number-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .number-card--wide {
+    grid-column: span 2;
+  }
+
+  .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-sheet--three-columns .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-sheet--two-columns .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-sheet--one-column .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-sheet--statements .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-task {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-task input {
+    margin-top: 0;
+  }
+
+  .visual-task__options {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-task__image {
+    max-height: 120px;
+  }
+
+  .long-task {
+    grid-template-columns: 1fr;
+  }
+
+  .long-task input {
+    margin-top: 0;
+  }
+
+  .selected-item {
+    grid-template-columns: 1fr;
+  }
+
+  .task-card__number {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* ===== Печать =====
+   Убирает лишние элементы сайта и готовит подборку к печати/PDF. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    color: #111;
+    background: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .hero,
+  .subjects,
+  #catalog,
+  #practice,
+  #variants,
+  #specialists,
+  #teacher,
+  .footer,
+  .prototype-overlay,
+  .print-builder .section__heading,
+  .print-controls {
+    display: none !important;
+  }
+
+  .section,
+  .print-builder {
+    max-width: 186mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-panel {
+    display: block;
+  }
+
+  .worksheet {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .worksheet__header {
+    border-color: #111;
+  }
+
+  .worksheet__header > span {
+    color: #111;
+    border: 1px solid #111;
+    background: #fff;
+  }
+
+  .worksheet-task {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-color: #999;
+    background: #fff;
+  }
+
+  .prototype-sheet {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+
+  .prototype-sheet + .prototype-sheet {
+    margin-top: 18mm;
+    break-before: page;
+  }
+
+  .prototype-sheet__header h3,
+  .prototype-sheet__header p {
+    font-size: 24pt;
+  }
+
+  .prototype-sheet__header strong {
+    color: #0000cc;
+    font-size: 22pt;
+  }
+
+  .prototype-group {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .prototype-group h4 {
+    font-size: 22pt;
+  }
+
+  .prototype-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18pt;
+  }
+
+  .prototype-sheet--three-columns .prototype-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .prototype-sheet--two-columns .prototype-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prototype-sheet--one-column .prototype-options {
+    grid-template-columns: 1fr;
+  }
+
+  .prototype-option {
+    grid-template-columns: auto 1fr;
+    font-size: 21pt;
+  }
+
+  .prototype-sheet--statements .prototype-options {
+    grid-template-columns: 1fr;
+    gap: 8pt;
+  }
+
+  .prototype-sheet--statements .prototype-option {
+    font-size: 16pt;
+    line-height: 1.25;
+  }
+
+  .prototype-sheet--visual-choice .visual-task {
+    grid-template-columns: 1fr;
+    gap: 8pt;
+  }
+
+  .prototype-sheet--visual-choice .visual-task input {
+    display: none;
+  }
+
+  .prototype-sheet--visual-choice .visual-task__title {
+    font-size: 20pt;
+  }
+
+  .prototype-sheet--visual-choice .visual-task__heading,
+  .prototype-sheet--visual-choice .visual-task__question,
+  .prototype-sheet--visual-choice .visual-task__option strong {
+    font-size: 16pt;
+  }
+
+  .prototype-sheet--visual-choice .visual-task__options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10pt 14pt;
+  }
+
+  .prototype-sheet--visual-choice .visual-task__image {
+    max-width: 120mm;
+    max-height: 26mm;
+  }
+
+  .long-task-list {
+    gap: 14pt;
+  }
+
+  .long-task {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .long-task__title {
+    font-size: 18pt;
+  }
+
+  .long-task__text {
+    font-size: 14pt;
+    line-height: 1.32;
+    text-align: justify;
+  }
+
+  .prototype-option input {
+    display: none;
+  }
+
+  .worksheet-task__solution {
+    border: 1px solid #999;
+    background: #fff;
+  }
+}
