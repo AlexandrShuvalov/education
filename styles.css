@@ -331,7 +331,7 @@ h3 {
 
 .subject-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 16px;
 }
 
@@ -340,6 +340,12 @@ h3 {
   padding: 22px;
   box-shadow: none;
   transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.subject-card--link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
 .subject-card:hover {
@@ -362,11 +368,113 @@ h3 {
 
 .subject-card p,
 .task-card p,
+.mcko-class-card p,
 .specialist-card p,
 .variant-grid p {
   color: var(--muted);
   font-family: Verdana, Geneva, sans-serif;
   line-height: 1.55;
+}
+
+.mcko {
+  padding-top: 44px;
+}
+
+.mcko-class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.mcko-class-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(250, 240, 219, 0.78)),
+    var(--card);
+  box-shadow: 0 18px 40px rgba(31, 35, 30, 0.08);
+}
+
+.mcko-class-card[open] {
+  border-color: rgba(33, 117, 100, 0.42);
+  box-shadow: 0 26px 54px rgba(31, 35, 30, 0.12);
+}
+
+.mcko-class-card summary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.mcko-class-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.mcko-class-card summary::after {
+  content: "+";
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(33, 117, 100, 0.1);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.mcko-class-card[open] summary::after {
+  content: "−";
+  color: #fffaf0;
+  background: var(--accent);
+}
+
+.mcko-class-card summary span {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  color: #fffaf0;
+  background: var(--accent-2);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.mcko-class-card summary strong {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+}
+
+.mcko-class-card__body {
+  display: grid;
+  gap: 16px;
+  padding: 0 22px 22px;
+}
+
+.mcko-class-card__body .button {
+  justify-self: start;
+  padding: 12px 18px;
+  font-size: 0.92rem;
+}
+
+.mcko-class-card__status {
+  justify-self: start;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(33, 117, 100, 0.1);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
 .split,
@@ -554,7 +662,7 @@ h3 {
    Сетка карточек 1-25, активная карточка и счетчик прототипов. */
 .exam-switch {
   display: inline-grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   margin: 10px 0 18px;
   padding: 6px;
@@ -580,6 +688,39 @@ h3 {
   color: #fffaf0;
   background: var(--accent-2);
   box-shadow: 0 10px 20px rgba(36, 107, 95, 0.22);
+}
+
+.exam-subswitch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 20px;
+}
+
+.exam-subswitch[hidden] {
+  display: none;
+}
+
+.exam-subswitch__button {
+  padding: 9px 14px;
+  border: 1px solid rgba(25, 37, 31, 0.12);
+  border-radius: 999px;
+  color: var(--accent);
+  background: rgba(255, 250, 240, 0.78);
+  cursor: pointer;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.exam-subswitch__button:hover,
+.exam-subswitch__button.is-active {
+  transform: translateY(-2px);
+  border-color: var(--accent-2);
+  color: #fffaf0;
+  background: var(--accent-2);
+  box-shadow: 0 10px 20px rgba(36, 107, 95, 0.18);
 }
 
 .number-grid {
@@ -636,6 +777,41 @@ h3 {
 
 .number-card--wide {
   grid-column: span 2;
+}
+
+.mcko-class-preview {
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(250, 240, 219, 0.74)),
+    var(--card);
+}
+
+.mcko-class-preview h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(32px, 4.6vw, 58px);
+}
+
+.mcko-class-preview p {
+  margin: 0;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.mcko-class-preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.92rem;
 }
 
 /* ===== Список прототипов на странице =====
