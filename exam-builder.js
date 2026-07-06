@@ -17,7 +17,10 @@ const EXAM_CONFIG = {
   },
   mcko: {
     label: "МЦКО",
-    skipTaskLoading: true,
+    taskCount: 25,
+    shortAnswerMaxNumber: 25,
+    taskFolder: "mcko-tasks",
+    dataKey: "MCKO_TASKS",
     filename: "mcko-math-materials.pdf",
   },
 };
@@ -117,6 +120,7 @@ let tasks = [];
 let activeExam = "oge";
 let activeNumber = OGE_TEXT_GROUP_LABEL;
 let activeEgeLevel = "profile";
+let activeMckoClass = 6;
 let activeTextTopic = "";
 let loadError = "";
 let useExamTaskNumbers = false;
@@ -143,7 +147,7 @@ function getTasksByNumber(number) {
     .sort((first, second) => first.prototype - second.prototype);
 }
 
-function getMckoClass(grade = activeNumber) {
+function getMckoClass(grade = activeMckoClass) {
   return MCKO_CLASSES.find((entry) => entry.grade === Number(grade)) || MCKO_CLASSES[0];
 }
 
@@ -161,6 +165,20 @@ function getEgeLevel(level = activeEgeLevel) {
 
 function isEgeBaseActive() {
   return isEgeActive() && activeEgeLevel === "base";
+}
+
+function getMckoGrade(task) {
+  return Number(task?.grade || task?.class || task?.mcko_class || 0);
+}
+
+function getActiveTaskSet() {
+  const currentTasks = taskSets[activeExam] || [];
+
+  if (isMckoActive()) {
+    return currentTasks.filter((task) => getMckoGrade(task) === Number(activeMckoClass));
+  }
+
+  return currentTasks;
 }
 
 function isOgeTextGroupActive() {
@@ -274,6 +292,10 @@ function isThreeColumnNumber(number) {
 }
 
 function isTwoColumnNumber(number) {
+  if (isMckoActive() && Number(activeMckoClass) === 6) {
+    return [1, 2, 4, 9, 13].includes(Number(number));
+  }
+
   return [9, 13].includes(Number(number));
 }
 
@@ -309,9 +331,20 @@ function getAvailableNumbers() {
   return [...new Set(tasks.map((task) => task.number))].sort((first, second) => first - second);
 }
 
+function getAvailableMckoClasses() {
+  return [...new Set((taskSets.mcko || []).map(getMckoGrade).filter(Boolean))]
+    .sort((first, second) => first - second);
+}
+
+function getDefaultMckoClass() {
+  const availableClasses = getAvailableMckoClasses();
+
+  return availableClasses[0] || activeMckoClass || MCKO_CLASSES[0].grade;
+}
+
 function getDefaultActiveNumber() {
   if (isMckoActive()) {
-    return MCKO_CLASSES[0].grade;
+    return getAvailableNumbers()[0] || 1;
   }
 
   if (isEgeBaseActive()) {
@@ -950,9 +983,17 @@ function renderKatexMath(expression) {
   }
 }
 
+function restoreBrokenLatexEscapes(expression) {
+  return String(expression || "")
+    .replace(/\f\s*rac/g, "\\frac")
+    .replace(/\r\s*ight/g, "\\right")
+    .replace(/\bleft(?=\s*[\({])/g, "\\left")
+    .replace(/\bcdot\b/g, "\\cdot");
+}
+
 function normalizeKatexExpression(expression) {
   return normalizeSlashFractions(
-    normalizeSqrtFunctionSyntax(String(expression || ""))
+    normalizeSqrtFunctionSyntax(restoreBrokenLatexEscapes(expression))
     .replace(/·/g, "\\cdot ")
     .replace(/\*/g, "\\cdot ")
     .replace(/:/g, "\\div ")
@@ -1322,6 +1363,7 @@ function normalizeLoadedTasks(loadedTasks, exam) {
       ...item,
       exam,
       source_file: entry.source_file,
+      grade: item.grade || entry.grade || entry.class || entry.mcko_class,
       subject: item.subject || entry.subject,
       number: item.number || entry.number,
       title: item.title || entry.title,
@@ -1342,7 +1384,7 @@ function normalizeLoadedTasks(loadedTasks, exam) {
 function normalizeTaskImagePath(path) {
   const value = String(path || "").trim();
 
-  if (!value || value.startsWith("tasks/") || value.startsWith("ege-tasks/") || value.startsWith("http")) {
+  if (!value || value.startsWith("tasks/") || value.startsWith("ege-tasks/") || value.startsWith("mcko-tasks/") || value.startsWith("http")) {
     return value;
   }
 
@@ -1740,7 +1782,25 @@ function getSelectedListEntries() {
 }
 
 function renderNumberGrid() {
-  if (isMckoActive() || isEgeBaseActive()) {
+  if (isMckoActive()) {
+    const cards = getAvailableNumbers().map((number) => {
+      const count = getTasksByNumber(number).length;
+      const isActive = Number(activeNumber) === number ? " is-active" : "";
+
+      return `
+        <button class="number-card${isActive}" type="button" data-number="${number}">
+          <strong>${number}</strong>
+          <span>МЦКО ${activeMckoClass} класс</span>
+          <small>${count} прототипов</small>
+        </button>
+      `;
+    });
+
+    taskNumberGrid.innerHTML = cards.join("");
+    return;
+  }
+
+  if (isEgeBaseActive()) {
     taskNumberGrid.innerHTML = "";
     return;
   }
@@ -1795,7 +1855,7 @@ function renderExamSubswitch() {
   if (isMckoActive()) {
     examSubswitch.innerHTML = MCKO_CLASSES
       .map((classEntry) => {
-        const activeClass = Number(activeNumber) === classEntry.grade ? " is-active" : "";
+        const activeClass = Number(activeMckoClass) === classEntry.grade ? " is-active" : "";
 
         return `
           <button class="exam-subswitch__button${activeClass}" type="button" data-mcko-class="${classEntry.grade}">
@@ -1848,7 +1908,7 @@ function renderExamSwitch() {
 
   if (catalogTitle) {
     if (isMckoActive()) {
-      catalogTitle.textContent = "Выберите класс для диагностики МЦКО";
+      catalogTitle.textContent = "Выберите класс и номер задания МЦКО";
     } else if (isEgeBaseActive()) {
       catalogTitle.textContent = "Базовая математика ЕГЭ";
     } else if (isEgeActive()) {
@@ -1860,7 +1920,7 @@ function renderExamSwitch() {
 
   if (catalogDescription) {
     if (isMckoActive()) {
-      catalogDescription.textContent = "Выберите класс в подпунктах ниже переключателя. Справа появится краткое описание раздела и место, куда позже можно подключить задания, варианты и материалы МЦКО.";
+      catalogDescription.textContent = "Сначала выберите класс в подпунктах ниже переключателя, затем номер задания справа. Прототипы можно открыть на весь экран и добавить в подборку.";
     } else if (isEgeBaseActive()) {
       catalogDescription.textContent = "Подпункт для базовой математики ЕГЭ. Здесь можно будет подключить отдельную базу заданий, не смешивая ее с профильной.";
     } else if (isEgeActive()) {
@@ -1873,6 +1933,21 @@ function renderExamSwitch() {
 
 function renderMckoCatalog() {
   const classEntry = getMckoClass();
+  const availableNumbers = getAvailableNumbers();
+  const prototypes = getTasksByNumber(activeNumber);
+
+  if (prototypes.length) {
+    return `
+      <div class="empty-state">
+        МЦКО, ${escapeHtml(classEntry.title)}. Для задания ${activeNumber} найдено прототипов: ${prototypes.length}.
+        <div class="empty-state__links">
+          <button type="button" data-number="${activeNumber}">
+            Открыть прототипы на весь экран
+          </button>
+        </div>
+      </div>
+    `;
+  }
 
   return `
     <section class="mcko-class-preview">
@@ -1880,8 +1955,16 @@ function renderMckoCatalog() {
       <h3>${escapeHtml(classEntry.title)}: материалы по математике</h3>
       <p>${escapeHtml(classEntry.description)}</p>
       <div class="mcko-class-preview__actions">
-        <span class="mcko-class-card__status">${escapeHtml(classEntry.status)}</span>
-        <span>Позже сюда можно подключить отдельный файл с заданиями для ${escapeHtml(classEntry.title)}.</span>
+        <span class="mcko-class-card__status">
+          ${availableNumbers.length ? "Выберите номер задания справа" : escapeHtml(classEntry.status)}
+        </span>
+        <span>
+          ${
+            availableNumbers.length
+              ? `В ${escapeHtml(classEntry.title)} доступны задания: ${availableNumbers.join(", ")}.`
+              : `Позже сюда можно подключить отдельный файл с заданиями для ${escapeHtml(classEntry.title)}.`
+          }
+        </span>
       </div>
     </section>
   `;
@@ -2117,8 +2200,12 @@ function renderPrototypes() {
 function renderOverlayPrototypes() {
   if (isMckoActive()) {
     const classEntry = getMckoClass();
-    overlayTitle.textContent = `МЦКО. ${classEntry.title}`;
-    overlayPrototypeList.innerHTML = renderMckoCatalog();
+    const prototypes = getTasksByNumber(activeNumber);
+
+    overlayTitle.textContent = `МЦКО. ${classEntry.title}. Задание ${activeNumber}`;
+    overlayPrototypeList.innerHTML = prototypes.length
+      ? renderPrototypeSheet(prototypes, { interactive: true })
+      : renderMckoCatalog();
     return;
   }
 
@@ -3469,7 +3556,12 @@ function bindEvents() {
     }
 
     activeExam = exam;
-    tasks = taskSets[activeExam] || [];
+
+    if (isMckoActive()) {
+      activeMckoClass = getDefaultMckoClass();
+    }
+
+    tasks = getActiveTaskSet();
     activeNumber = getDefaultActiveNumber();
     selectedTaskIds.clear();
     useExamTaskNumbers = false;
@@ -3492,11 +3584,6 @@ function bindEvents() {
   function selectNumber(number) {
     activeNumber = number;
     renderApp();
-
-    if (isMckoActive()) {
-      return;
-    }
-
     openPrototypeOverlay();
   }
 
@@ -3549,7 +3636,12 @@ function bindEvents() {
         return;
       }
 
-      activeNumber = Number(button.dataset.mckoClass);
+      activeMckoClass = Number(button.dataset.mckoClass);
+      tasks = getActiveTaskSet();
+      activeNumber = getDefaultActiveNumber();
+      selectedTaskIds.clear();
+      useExamTaskNumbers = false;
+      closePrototypeOverlay();
       renderApp();
     });
   }
@@ -3710,7 +3802,11 @@ function loadTasks() {
         }));
     });
 
-    tasks = taskSets[activeExam] || [];
+    if (isMckoActive()) {
+      activeMckoClass = getDefaultMckoClass();
+    }
+
+    tasks = getActiveTaskSet();
     activeNumber = getDefaultActiveNumber();
     loadError = "";
   } catch (error) {
