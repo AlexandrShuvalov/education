@@ -17,8 +17,8 @@ const EXAM_CONFIG = {
   },
   mcko: {
     label: "МЦКО",
-    taskCount: 25,
-    shortAnswerMaxNumber: 25,
+    taskCount: 9,
+    shortAnswerMaxNumber: 9,
     taskFolder: "mcko-tasks",
     dataKey: "MCKO_TASKS",
     filename: "mcko-math-materials.pdf",
@@ -293,7 +293,7 @@ function isThreeColumnNumber(number) {
 
 function isTwoColumnNumber(number) {
   if (isMckoActive() && Number(activeMckoClass) === 6) {
-    return [1, 2, 4, 9, 13].includes(Number(number));
+    return [1, 2, 3, 4, 6, 7, 9, 13].includes(Number(number));
   }
 
   return [9, 13].includes(Number(number));
@@ -540,7 +540,7 @@ function formatMath(text) {
 function formatTaskContent(task) {
   const expression = getExpression(task);
 
-  if (Number(task.number) === 8 && /,\s*при\s+/i.test(expression)) {
+  if (/,\s*при\s+/i.test(expression)) {
     return renderFormulaWithCondition(expression);
   }
 
@@ -987,8 +987,8 @@ function restoreBrokenLatexEscapes(expression) {
   return String(expression || "")
     .replace(/\f\s*rac/g, "\\frac")
     .replace(/\r\s*ight/g, "\\right")
-    .replace(/\bleft(?=\s*[\({])/g, "\\left")
-    .replace(/\bcdot\b/g, "\\cdot");
+    .replace(/(^|[^\\])\bleft(?=\s*[\({])/g, "$1\\left")
+    .replace(/(^|[^\\])\bcdot\b/g, "$1\\cdot");
 }
 
 function normalizeKatexExpression(expression) {
@@ -3495,11 +3495,6 @@ function getRandomGroupedTasks(taskList) {
 }
 
 function selectRandomVariant() {
-  if (isMckoActive()) {
-    alert("Для МЦКО случайные варианты появятся после подключения базы заданий по классам.");
-    return;
-  }
-
   if (isEgeBaseActive()) {
     alert("Для базового ЕГЭ случайные варианты появятся после подключения отдельной базы заданий.");
     return;
