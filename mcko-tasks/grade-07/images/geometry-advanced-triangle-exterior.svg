@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="220" viewBox="0 0 360 220">
+  <rect width="360" height="220" fill="#ffffff"/>
+  <g stroke="#333" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M55 170 L285 45 L205 170 Z"/>
+    <line x1="55" y1="170" x2="320" y2="170"/>
+  </g>
+  <text x="48" y="198" font-family="Georgia, serif" font-size="30" font-style="italic">A</text>
+  <text x="286" y="40" font-family="Georgia, serif" font-size="30" font-style="italic">B</text>
+  <text x="196" y="198" font-family="Georgia, serif" font-size="30" font-style="italic">C</text>
+</svg>

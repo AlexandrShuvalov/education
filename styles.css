@@ -692,13 +692,52 @@ h3 {
 
 .exam-subswitch {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 14px;
   margin: -4px 0 20px;
 }
 
 .exam-subswitch[hidden] {
   display: none;
+}
+
+.exam-subswitch__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-subswitch__group--levels,
+.exam-subswitch__group--sections {
+  flex-wrap: nowrap;
+  width: auto;
+  max-width: 100%;
+  margin-top: 4px;
+  padding-left: 0;
+}
+
+.exam-subswitch__group--levels .exam-subswitch__label,
+.exam-subswitch__group--sections .exam-subswitch__label {
+  white-space: nowrap;
+}
+
+.exam-subswitch__group--levels .exam-subswitch__button,
+.exam-subswitch__group--sections .exam-subswitch__button {
+  width: auto;
+  min-width: 0;
+  padding-inline: 18px;
+  white-space: nowrap;
+}
+
+.exam-subswitch__label {
+  color: var(--muted);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .exam-subswitch__button {
@@ -768,6 +807,7 @@ h3 {
   color: var(--accent-2);
   font-size: 12px;
   font-weight: 900;
+  line-height: 1.2;
 }
 
 .number-card small {
@@ -802,6 +842,52 @@ h3 {
   font-family: Verdana, Geneva, sans-serif;
   font-size: 1.02rem;
   line-height: 1.65;
+}
+
+.mcko-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mcko-section-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid rgba(25, 37, 31, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.mcko-section-card span,
+.mcko-section-card small {
+  color: var(--accent);
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.mcko-section-card span {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mcko-section-card h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.mcko-section-card p {
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.mcko-section-card small {
+  justify-self: start;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(33, 117, 100, 0.1);
 }
 
 .mcko-class-preview__actions {
@@ -2474,6 +2560,10 @@ h3 {
 
   .number-card--wide {
     grid-column: span 2;
+  }
+
+  .mcko-section-grid {
+    grid-template-columns: 1fr;
   }
 
   .prototype-options {

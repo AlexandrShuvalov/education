@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="210" viewBox="0 0 900 210">
+  <defs>
+    <linearGradient id="cell" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d8edf7"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0" x2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#b9d2ea"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="210" fill="#ffffff"/>
+  <g font-family="Arial, sans-serif" font-size="21" stroke="#9aa7ad" stroke-width="1.2">
+    <rect x="15" y="22" width="870" height="166" fill="none"/>
+    <g fill="url(#head)" font-weight="700">
+      <rect x="15" y="22" width="135" height="42"/>
+      <rect x="150" y="22" width="165" height="42"/>
+      <rect x="315" y="22" width="135" height="42"/>
+      <rect x="450" y="22" width="165" height="42"/>
+      <rect x="615" y="22" width="135" height="42"/>
+      <rect x="750" y="22" width="135" height="42"/>
+    </g>
+    <g fill="url(#cell)">
+      <rect x="15" y="64" width="135" height="42"/><rect x="150" y="64" width="165" height="42"/>
+      <rect x="315" y="64" width="135" height="42"/><rect x="450" y="64" width="165" height="42"/>
+      <rect x="615" y="64" width="135" height="42"/><rect x="750" y="64" width="135" height="42"/>
+      <rect x="15" y="106" width="135" height="42"/><rect x="150" y="106" width="165" height="42"/>
+      <rect x="315" y="106" width="135" height="42"/><rect x="450" y="106" width="165" height="42"/>
+      <rect x="615" y="106" width="135" height="42"/><rect x="750" y="106" width="135" height="42"/>
+      <rect x="15" y="148" width="135" height="40"/><rect x="150" y="148" width="165" height="40"/>
+      <rect x="315" y="148" width="135" height="40"/><rect x="450" y="148" width="165" height="40"/>
+      <rect x="615" y="148" width="135" height="40"/><rect x="750" y="148" width="135" height="40"/>
+    </g>
+    <g fill="#111" stroke="none">
+      <text x="38" y="51" font-weight="700">Фамилия</text><text x="170" y="51" font-weight="700">Кол-во баллов</text>
+      <text x="338" y="51" font-weight="700">Фамилия</text><text x="470" y="51" font-weight="700">Кол-во баллов</text>
+      <text x="638" y="51" font-weight="700">Фамилия</text><text x="770" y="51" font-weight="700">Кол-во баллов</text>
+      <text x="24" y="92">Александров</text><text x="222" y="92">53</text>
+      <text x="326" y="92">Гончаров</text><text x="522" y="92">62</text>
+      <text x="626" y="92">Ларченко</text><text x="820" y="92">90</text>
+      <text x="24" y="134">Антипенко</text><text x="222" y="134">87</text>
+      <text x="326" y="134">Денисова</text><text x="522" y="134">73</text>
+      <text x="626" y="134">Невысокий</text><text x="820" y="134">46</text>
+      <text x="24" y="176">Васильева</text><text x="222" y="176">69</text>
+      <text x="326" y="176">Завьялов</text><text x="522" y="176">54</text>
+      <text x="626" y="176">Рыбаков</text><text x="820" y="176">78</text>
+    </g>
+  </g>
+</svg>
