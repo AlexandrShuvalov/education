@@ -660,9 +660,9 @@ h3 {
 
 /* ===== Выбор номера задания ОГЭ =====
    Сетка карточек 1-25, активная карточка и счетчик прототипов. */
-.exam-switch {
+.exam-switch,
+.subject-switch {
   display: inline-grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   margin: 10px 0 18px;
   padding: 6px;
@@ -671,7 +671,17 @@ h3 {
   background: rgba(25, 37, 31, 0.08);
 }
 
-.exam-switch__button {
+.subject-switch {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 8px;
+}
+
+.exam-switch {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.exam-switch__button,
+.subject-switch__button {
   min-width: 86px;
   padding: 10px 18px;
   border: 0;
@@ -684,7 +694,8 @@ h3 {
   font-weight: 900;
 }
 
-.exam-switch__button.is-active {
+.exam-switch__button.is-active,
+.subject-switch__button.is-active {
   color: #fffaf0;
   background: var(--accent-2);
   box-shadow: 0 10px 20px rgba(36, 107, 95, 0.22);

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-labelledby="title desc">
+  <title id="title">Графики линейной функции и параболы</title>
+  <desc id="desc">Координатная плоскость с графиками функций y = 2x - 1 и y = -x^2 + 2x + 3, пересекающимися в точках A и B.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="360" height="360" fill="#fff"/>
+  <g stroke="#c9c9c9" stroke-width="1">
+    <path d="M40 40H310M40 70H310M40 100H310M40 130H310M40 160H310M40 190H310M40 220H310M40 250H310M40 280H310M40 310H310M40 340H310"/>
+    <path d="M40 40V340M70 40V340M100 40V340M130 40V340M160 40V340M190 40V340M220 40V340M250 40V340M280 40V340M310 40V340"/>
+  </g>
+  <g stroke="#111" stroke-width="2">
+    <line x1="40" y1="190" x2="320" y2="190" marker-end="url(#arrow)"/>
+    <line x1="160" y1="340" x2="160" y2="30" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#111" font-family="Georgia, 'Times New Roman', serif" font-size="22">
+    <text x="323" y="203">x</text>
+    <text x="146" y="34">y</text>
+    <text x="147" y="210">0</text>
+    <text x="187" y="208">1</text>
+    <text x="141" y="164">1</text>
+  </g>
+  <path d="M100 340 L115 257.5 L130 190 L145 137.5 L160 100 L175 77.5 L190 70 L205 77.5 L220 100 L235 137.5 L250 190 L265 257.5 L280 340"
+        fill="none" stroke="#111" stroke-width="3"/>
+  <line x1="100" y1="340" x2="255" y2="30" stroke="#111" stroke-width="3"/>
+  <g fill="#111">
+    <circle cx="220" cy="100" r="4"/>
+    <circle cx="100" cy="340" r="4"/>
+    <circle cx="190" cy="160" r="3"/>
+    <circle cx="160" cy="220" r="3"/>
+  </g>
+  <g fill="#111" font-family="Georgia, 'Times New Roman', serif" font-size="22">
+    <text x="225" y="96">A</text>
+    <text x="78" y="333">B</text>
+  </g>
+</svg>

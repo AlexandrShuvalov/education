@@ -25,6 +25,51 @@ const EXAM_CONFIG = {
   },
 };
 
+const SUBJECTS = {
+  math: {
+    label: "Математика",
+    taskSubject: "Математика",
+    genitive: "математике",
+    emptyTitle: "Выберите экзамен и номер задания",
+    emptyDescription: "Математика уже наполнена заданиями. Если какой-то раздел пустой, добавьте задачи в соответствующий файл.",
+  },
+  russian: {
+    label: "Русский язык",
+    taskSubject: "Русский язык",
+    genitive: "русскому языку",
+    mckoClasses: [5, 6, 7, 8, 10],
+    emptyTitle: "Русский язык: база скоро появится",
+    emptyDescription: "Раздел уже подключен к интерфейсу. Когда появятся задания по русскому языку, они автоматически отобразятся здесь.",
+    examOverrides: {
+      oge: {
+        switchLabel: "ОГЭ 9",
+        title: "ОГЭ по русскому языку · 9 класс",
+        description: "Раздел для подготовки к ОГЭ по русскому языку в 9 классе. Когда база будет заполнена, здесь появятся номера заданий и прототипы.",
+        status: "ОГЭ · 9 класс",
+        taskCount: 13,
+        shortAnswerMaxNumber: 13,
+        filename: "oge-russian-prototypes.pdf",
+      },
+      ege: {
+        switchLabel: "ЕГЭ 11",
+        title: "ЕГЭ по русскому языку · 11 класс",
+        description: "Раздел для подготовки к ЕГЭ по русскому языку в 11 классе. Задания будут храниться отдельно от математики.",
+        status: "ЕГЭ · 11 класс",
+        taskCount: 27,
+        shortAnswerMaxNumber: 26,
+        filename: "ege-russian-prototypes.pdf",
+      },
+      mcko: {
+        switchLabel: "МЦКО",
+        title: "МЦКО по русскому языку",
+        description: "Выберите класс МЦКО: 5, 6, 7, 8 или 10. Задания каждого класса можно будет хранить отдельно.",
+        status: "МЦКО · 5, 6, 7, 8, 10 классы",
+        filename: "mcko-russian-materials.pdf",
+      },
+    },
+  },
+};
+
 const OGE_TEXT_GROUP_LABEL = "1-5";
 const OGE_TEXT_GROUP_DATASET = "text-1-5";
 const EGE_LEVELS = [
@@ -125,6 +170,7 @@ const prototypeOverlay = document.querySelector("#prototypeOverlay");
 const overlayTitle = document.querySelector("#overlayTitle");
 const overlayPrototypeList = document.querySelector("#overlayPrototypeList");
 const closeOverlay = document.querySelector("#closeOverlay");
+const subjectSwitch = document.querySelector("#subjectSwitch");
 const examSwitch = document.querySelector("#examSwitch");
 const examSubswitch = document.querySelector("#examSubswitch");
 const catalogEyebrow = document.querySelector("#catalogEyebrow");
@@ -137,6 +183,7 @@ const taskSets = {
   mcko: [],
 };
 let tasks = [];
+let activeSubject = "math";
 let activeExam = "oge";
 let activeNumber = OGE_TEXT_GROUP_LABEL;
 let activeEgeLevel = "profile";
@@ -152,7 +199,72 @@ const STATEMENT_GROUP_SIZE = 3;
 const downloadImageCache = new Map();
 
 function getExamConfig(exam = activeExam) {
-  return EXAM_CONFIG[exam] || EXAM_CONFIG.oge;
+  const baseConfig = EXAM_CONFIG[exam] || EXAM_CONFIG.oge;
+  const subjectOverrides = getSubjectConfig().examOverrides?.[exam] || {};
+
+  return { ...baseConfig, ...subjectOverrides };
+}
+
+function getSubjectConfig(subject = activeSubject) {
+  return SUBJECTS[subject] || SUBJECTS.math;
+}
+
+function getSubjectExamOverride(exam = activeExam) {
+  return getSubjectConfig().examOverrides?.[exam] || {};
+}
+
+function getExamSwitchLabel(exam) {
+  return getSubjectExamOverride(exam).switchLabel || getExamConfig(exam).label;
+}
+
+function getSubjectExamTitle(exam = activeExam) {
+  const subject = getSubjectConfig();
+  const config = getExamConfig(exam);
+  return getSubjectExamOverride(exam).title || `${subject.label} · ${config.label}`;
+}
+
+function getSubjectExamDescription(exam = activeExam) {
+  return getSubjectExamOverride(exam).description || getSubjectConfig().emptyDescription;
+}
+
+function getSubjectExamStatus(exam = activeExam) {
+  return getSubjectExamOverride(exam).status || "Раздел подключен";
+}
+
+function getSubjectGenitive(subject = activeSubject) {
+  return getSubjectConfig(subject).genitive;
+}
+
+function getSubjectSlug(subject = activeSubject) {
+  return subject === "russian" ? "russian" : "math";
+}
+
+function getPdfFilename() {
+  const config = getExamConfig();
+
+  if (config.filename) {
+    return config.filename;
+  }
+
+  return `${activeExam}-${getSubjectSlug()}-materials.pdf`;
+}
+
+function getTaskSubject(task) {
+  return String(task?.subject || "").trim();
+}
+
+function isTaskForActiveSubject(task) {
+  const subject = getTaskSubject(task);
+
+  if (!subject && activeSubject === "math") {
+    return true;
+  }
+
+  return subject === getSubjectConfig().taskSubject;
+}
+
+function hasActiveSubjectTasksInExam(exam = activeExam) {
+  return (taskSets[exam] || []).some(isTaskForActiveSubject);
 }
 
 function getTaskExamLabel(task) {
@@ -169,16 +281,22 @@ function getTasksByNumber(number) {
     .sort((first, second) => first.prototype - second.prototype);
 }
 
+function getMckoClassOptions() {
+  const allowedGrades = getSubjectConfig().mckoClasses || MCKO_CLASSES.map((entry) => entry.grade);
+  return MCKO_CLASSES.filter((entry) => allowedGrades.includes(entry.grade));
+}
+
 function getMckoClass(grade = activeMckoClass) {
-  return MCKO_CLASSES.find((entry) => entry.grade === Number(grade)) || MCKO_CLASSES[0];
+  const classOptions = getMckoClassOptions();
+  return classOptions.find((entry) => entry.grade === Number(grade)) || classOptions[0] || MCKO_CLASSES[0];
 }
 
 function hasMckoLevelChoice(grade = activeMckoClass) {
-  return MCKO_LEVEL_GRADES.includes(Number(grade));
+  return isMathSubject() && MCKO_LEVEL_GRADES.includes(Number(grade));
 }
 
 function hasMckoSectionChoice(grade = activeMckoClass) {
-  return MCKO_SECTION_GRADES.includes(Number(grade));
+  return isMathSubject() && MCKO_SECTION_GRADES.includes(Number(grade));
 }
 
 function normalizeMckoLevel(value) {
@@ -267,8 +385,20 @@ function isMckoActive() {
   return activeExam === "mcko";
 }
 
+function isMathSubject() {
+  return activeSubject === "math";
+}
+
+function isOgeTextGroupEnabled() {
+  return activeExam === "oge" && isMathSubject();
+}
+
 function isEgeActive() {
   return activeExam === "ege";
+}
+
+function hasEgeLevelChoice() {
+  return isEgeActive() && isMathSubject();
 }
 
 function getEgeLevel(level = activeEgeLevel) {
@@ -276,7 +406,7 @@ function getEgeLevel(level = activeEgeLevel) {
 }
 
 function isEgeBaseActive() {
-  return isEgeActive() && activeEgeLevel === "base";
+  return hasEgeLevelChoice() && activeEgeLevel === "base";
 }
 
 function getMckoGrade(task) {
@@ -284,7 +414,7 @@ function getMckoGrade(task) {
 }
 
 function getActiveTaskSet() {
-  const currentTasks = taskSets[activeExam] || [];
+  const currentTasks = (taskSets[activeExam] || []).filter(isTaskForActiveSubject);
 
   if (isMckoActive()) {
     return currentTasks.filter((task) => {
@@ -310,7 +440,7 @@ function getActiveTaskSet() {
 }
 
 function isOgeTextGroupActive() {
-  return activeExam === "oge" && String(activeNumber) === OGE_TEXT_GROUP_LABEL;
+  return isOgeTextGroupEnabled() && String(activeNumber) === OGE_TEXT_GROUP_LABEL;
 }
 
 function isOgeTextGroupTask(task) {
@@ -459,15 +589,43 @@ function getAvailableNumbers() {
   return [...new Set(tasks.map((task) => task.number))].sort((first, second) => first - second);
 }
 
+function renderSubjectSwitch() {
+  if (!subjectSwitch) {
+    return;
+  }
+
+  subjectSwitch.innerHTML = Object.entries(SUBJECTS)
+    .map(([subject, config]) => {
+      const activeClass = subject === activeSubject ? " is-active" : "";
+
+      return `
+        <button class="subject-switch__button${activeClass}" type="button" data-subject="${subject}">
+          ${escapeHtml(config.label)}
+        </button>
+      `;
+    })
+    .join("");
+}
+
 function getAvailableMckoClasses() {
-  return [...new Set((taskSets.mcko || []).map(getMckoGrade).filter(Boolean))]
+  return [...new Set((taskSets.mcko || []).filter(isTaskForActiveSubject).map(getMckoGrade).filter(Boolean))]
     .sort((first, second) => first - second);
 }
 
 function getDefaultMckoClass() {
   const availableClasses = getAvailableMckoClasses();
+  const classOptions = getMckoClassOptions().map((entry) => entry.grade);
+  const availableClass = availableClasses.find((grade) => classOptions.includes(grade));
 
-  return availableClasses[0] || activeMckoClass || MCKO_CLASSES[0].grade;
+  if (availableClass) {
+    return availableClass;
+  }
+
+  if (classOptions.includes(Number(activeMckoClass))) {
+    return Number(activeMckoClass);
+  }
+
+  return classOptions[0] || MCKO_CLASSES[0].grade;
 }
 
 function getDefaultMckoSection({ grade = activeMckoClass, level = activeMckoLevel, preferred = activeMckoSection } = {}) {
@@ -477,6 +635,7 @@ function getDefaultMckoSection({ grade = activeMckoClass, level = activeMckoLeve
 
   const sectionIds = new Set(
     (taskSets.mcko || [])
+      .filter(isTaskForActiveSubject)
       .filter((task) => {
         if (getMckoGrade(task) !== Number(grade)) {
           return false;
@@ -507,7 +666,7 @@ function getDefaultActiveNumber() {
     return 1;
   }
 
-  if (activeExam === "oge" && getOgeTextGroupCases().length) {
+  if (isOgeTextGroupEnabled() && getOgeTextGroupCases().length) {
     ensureActiveTextTopic();
     return OGE_TEXT_GROUP_LABEL;
   }
@@ -1949,6 +2108,11 @@ function getSelectedListEntries() {
 }
 
 function renderNumberGrid() {
+  if (!hasActiveSubjectTasksInExam()) {
+    taskNumberGrid.innerHTML = "";
+    return;
+  }
+
   if (isMckoActive()) {
     const cards = getAvailableNumbers().map((number) => {
       const count = getTasksByNumber(number).length;
@@ -1975,7 +2139,7 @@ function renderNumberGrid() {
   const config = getExamConfig();
   const cards = [];
 
-  if (activeExam === "oge") {
+  if (isOgeTextGroupEnabled()) {
     const caseCount = getOgeTextGroupCases().length;
     const activeClass = isOgeTextGroupActive() ? " is-active" : "";
 
@@ -1988,7 +2152,7 @@ function renderNumberGrid() {
     `);
   }
 
-  const startNumber = activeExam === "oge" ? 6 : 1;
+  const startNumber = isOgeTextGroupEnabled() ? 6 : 1;
 
   for (let number = startNumber; number <= config.taskCount; number += 1) {
     const count = getTasksByNumber(number).length;
@@ -2011,7 +2175,7 @@ function renderExamSubswitch() {
     return;
   }
 
-  if (!isMckoActive() && !isEgeActive()) {
+  if (!isMckoActive() && !hasEgeLevelChoice()) {
     examSubswitch.innerHTML = "";
     examSubswitch.hidden = true;
     return;
@@ -2020,7 +2184,7 @@ function renderExamSubswitch() {
   examSubswitch.hidden = false;
 
   if (isMckoActive()) {
-    const classButtons = MCKO_CLASSES
+    const classButtons = getMckoClassOptions()
       .map((classEntry) => {
         const activeClass = Number(activeMckoClass) === classEntry.grade ? " is-active" : "";
 
@@ -2101,18 +2265,39 @@ function renderExamSwitch() {
   }
 
   examSwitch.innerHTML = Object.entries(EXAM_CONFIG)
-    .map(([exam, config]) => {
+    .map(([exam]) => {
       const activeClass = exam === activeExam ? " is-active" : "";
       return `
         <button class="exam-switch__button${activeClass}" type="button" data-exam="${exam}">
-          ${config.label}
+          ${escapeHtml(getExamSwitchLabel(exam))}
         </button>
       `;
     })
     .join("");
 
+  const subject = getSubjectConfig();
+  const hasSubjectTasks = hasActiveSubjectTasksInExam();
+
+  if (!hasSubjectTasks) {
+    if (catalogEyebrow) {
+      catalogEyebrow.textContent = `${subject.label} · ${getExamSwitchLabel(activeExam)}`;
+    }
+
+    if (catalogTitle) {
+      catalogTitle.textContent = getSubjectExamTitle();
+    }
+
+    if (catalogDescription) {
+      catalogDescription.textContent = getSubjectExamDescription();
+    }
+
+    return;
+  }
+
   if (catalogEyebrow) {
-    if (isMckoActive()) {
+    if (!isMathSubject()) {
+      catalogEyebrow.textContent = `${subject.label} · ${getExamSwitchLabel(activeExam)}`;
+    } else if (isMckoActive()) {
       catalogEyebrow.textContent = "Классы МЦКО";
     } else if (isEgeActive()) {
       catalogEyebrow.textContent = "Раздел ЕГЭ";
@@ -2122,11 +2307,15 @@ function renderExamSwitch() {
   }
 
   if (catalogTitle) {
-    if (isMckoActive()) {
+    if (!isMathSubject()) {
+      catalogTitle.textContent = isMckoActive() ? "Выберите класс и номер задания МЦКО" : getSubjectExamTitle();
+    } else if (isMckoActive()) {
       catalogTitle.textContent = "Выберите класс и номер задания МЦКО";
     } else if (isEgeBaseActive()) {
       catalogTitle.textContent = "Базовая математика ЕГЭ";
     } else if (isEgeActive()) {
+      catalogTitle.textContent = `Выберите номер задания от 1 до ${getExamConfig().taskCount}`;
+    } else if (!isOgeTextGroupEnabled()) {
       catalogTitle.textContent = `Выберите номер задания от 1 до ${getExamConfig().taskCount}`;
     } else {
       catalogTitle.textContent = "Выберите группу 1-5 или номер задания от 6 до 25";
@@ -2134,16 +2323,36 @@ function renderExamSwitch() {
   }
 
   if (catalogDescription) {
-    if (isMckoActive()) {
+    if (!isMathSubject()) {
+      catalogDescription.textContent = getSubjectExamDescription();
+    } else if (isMckoActive()) {
       catalogDescription.textContent = "Сначала выберите класс в подпунктах ниже переключателя. Для 7-10 классов дополнительно выберите уровень, для 7, 8 и 10 классов - раздел алгебры или геометрии, затем номер задания справа.";
     } else if (isEgeBaseActive()) {
       catalogDescription.textContent = "Подпункт для базовой математики ЕГЭ. Здесь можно будет подключить отдельную базу заданий, не смешивая ее с профильной.";
-    } else if (isEgeActive()) {
+    } else if (hasEgeLevelChoice()) {
       catalogDescription.textContent = "Выбран профильный ЕГЭ. После выбора номера справа появятся все прототипы из базы. Отметьте галочками те задания, которые нужно добавить в PDF или распечатать.";
+    } else if (isEgeActive() || !isOgeTextGroupEnabled()) {
+      catalogDescription.textContent = "После выбора номера справа появятся все прототипы из базы. Отметьте галочками те задания, которые нужно добавить в PDF или распечатать.";
     } else {
       catalogDescription.textContent = "Задания 1-5 собраны в общий раздел по тексту: сначала выбирается тема, затем конкретный вариант. Остальные номера открываются как обычные прототипы.";
     }
   }
+}
+
+function renderSubjectEmptyCatalog() {
+  const subject = getSubjectConfig();
+
+  return `
+    <section class="mcko-class-preview">
+      <p class="eyebrow">${escapeHtml(subject.label)} · ${escapeHtml(getExamSwitchLabel(activeExam))}</p>
+      <h3>${escapeHtml(getSubjectExamTitle())}</h3>
+      <p>${escapeHtml(getSubjectExamDescription())}</p>
+      <div class="mcko-class-preview__actions">
+        <span class="mcko-class-card__status">${escapeHtml(getSubjectExamStatus())}</span>
+        <span>Как только в базе появятся задания этого предмета, здесь автоматически откроются номера и прототипы.</span>
+      </div>
+    </section>
+  `;
 }
 
 function renderMckoMathSectionCards() {
@@ -2171,6 +2380,7 @@ function renderMckoCatalog() {
   const sectionSuffix = getMckoSectionSuffix(classEntry.grade);
   const selectionSuffix = `${levelSuffix}${sectionSuffix}`;
   const level = getMckoLevel();
+  const classDescription = isMathSubject() ? classEntry.description : getSubjectExamDescription();
   const availableNumbers = getAvailableNumbers();
   const prototypes = getTasksByNumber(activeNumber);
 
@@ -2190,9 +2400,9 @@ function renderMckoCatalog() {
   return `
     <section class="mcko-class-preview">
       <p class="eyebrow">МЦКО · ${escapeHtml(classEntry.title)}${escapeHtml(selectionSuffix)}</p>
-      <h3>${escapeHtml(classEntry.title)}: материалы по математике${escapeHtml(selectionSuffix)}</h3>
-      <p>${escapeHtml(classEntry.description)}${hasMckoLevelChoice(classEntry.grade) ? ` ${escapeHtml(level.description)}` : ""}</p>
-      ${Number(classEntry.grade) === 5 || hasMckoSectionChoice(classEntry.grade) ? "" : renderMckoMathSectionCards()}
+      <h3>${escapeHtml(classEntry.title)}: материалы по ${escapeHtml(getSubjectGenitive())}${escapeHtml(selectionSuffix)}</h3>
+      <p>${escapeHtml(classDescription)}${hasMckoLevelChoice(classEntry.grade) ? ` ${escapeHtml(level.description)}` : ""}</p>
+      ${isMathSubject() && Number(classEntry.grade) !== 5 && !hasMckoSectionChoice(classEntry.grade) ? renderMckoMathSectionCards() : ""}
       <div class="mcko-class-preview__actions">
         <span class="mcko-class-card__status">
           ${availableNumbers.length ? "Выберите номер задания справа" : escapeHtml(classEntry.status)}
@@ -2374,6 +2584,20 @@ function renderTextGroupOverlay() {
 }
 
 function renderPrototypes() {
+  if (loadError) {
+    prototypeList.innerHTML = `
+      <div class="empty-state">
+        ${loadError}
+      </div>
+    `;
+    return;
+  }
+
+  if (!hasActiveSubjectTasksInExam()) {
+    prototypeList.innerHTML = renderSubjectEmptyCatalog();
+    return;
+  }
+
   if (isMckoActive()) {
     prototypeList.innerHTML = renderMckoCatalog();
     return;
@@ -2390,17 +2614,8 @@ function renderPrototypes() {
   }
 
   const prototypes = getTasksByNumber(activeNumber);
-  const availableNumbers = getAvailableNumbers().filter((number) => !(activeExam === "oge" && number >= 1 && number <= 5));
+  const availableNumbers = getAvailableNumbers().filter((number) => !(isOgeTextGroupEnabled() && number >= 1 && number <= 5));
   const config = getExamConfig();
-
-  if (loadError) {
-    prototypeList.innerHTML = `
-      <div class="empty-state">
-        ${loadError}
-      </div>
-    `;
-    return;
-  }
 
   prototypeList.innerHTML = prototypes.length
     ? `
@@ -2437,6 +2652,12 @@ function renderPrototypes() {
 }
 
 function renderOverlayPrototypes() {
+  if (!hasActiveSubjectTasksInExam()) {
+    overlayTitle.textContent = `${getSubjectConfig().label}. ${getExamConfig().label}`;
+    overlayPrototypeList.innerHTML = renderSubjectEmptyCatalog();
+    return;
+  }
+
   if (isMckoActive()) {
     const classEntry = getMckoClass();
     const prototypes = getTasksByNumber(activeNumber);
@@ -2566,7 +2787,7 @@ function renderWorksheet() {
   const worksheetItemCount = getWorksheetItemCount(selectedTasks);
   const config = getExamConfig();
 
-  worksheetTitle.textContent = `Подборка прототипов ${config.label} по математике`;
+  worksheetTitle.textContent = `Подборка прототипов ${config.label} по ${getSubjectGenitive()}`;
   worksheetCount.textContent = `${worksheetItemCount} заданий`;
   worksheetTasks.innerHTML = getWorksheetContent(selectedTasks, showAnswers);
 }
@@ -2867,7 +3088,7 @@ function createPdfDocument(selectedTasks, showAnswers) {
   pdfDocument.className = "pdf-document";
   pdfDocument.innerHTML = `
     <header class="pdf-document__header">
-      <h1>Подборка прототипов ${config.label} по математике</h1>
+      <h1>Подборка прототипов ${config.label} по ${getSubjectGenitive()}</h1>
       <p>${getWorksheetItemCount(selectedTasks)} заданий</p>
     </header>
     ${getWorksheetContent(selectedTasks, showAnswers)}
@@ -2896,7 +3117,7 @@ function getDownloadHtml(selectedTasks, showAnswers) {
   <head>
     <meta charset="utf-8">
     <base href="${baseHref}">
-    <title>Подборка прототипов ${config.label} по математике</title>
+    <title>Подборка прототипов ${config.label} по ${getSubjectGenitive()}</title>
     <link rel="stylesheet" href="lib/katex/katex.min.css">
     <style>
       @page {
@@ -3543,7 +3764,7 @@ function getDownloadHtml(selectedTasks, showAnswers) {
       function getPdfOptions() {
         return {
           margin: 12,
-          filename: '${config.filename}',
+          filename: '${getPdfFilename()}',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: false, allowTaint: false, backgroundColor: '#ffffff' },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -3663,7 +3884,7 @@ async function downloadWorksheetFile() {
 
 function getWorksheetHtmlFilename() {
   const today = new Date().toISOString().slice(0, 10);
-  return `${activeExam}-math-worksheet-${today}.html`;
+  return `${activeExam}-${getSubjectSlug()}-worksheet-${today}.html`;
 }
 
 async function downloadWorksheetHtmlFile() {
@@ -3755,6 +3976,7 @@ function selectRandomVariant() {
 }
 
 function renderApp() {
+  renderSubjectSwitch();
   renderExamSwitch();
   renderExamSubswitch();
   renderNumberGrid();
@@ -3781,6 +4003,28 @@ function bindEvents() {
 
     tasks = getActiveTaskSet();
     activeNumber = getDefaultActiveNumber();
+    selectedTaskIds.clear();
+    useExamTaskNumbers = false;
+    closePrototypeOverlay();
+    renderApp();
+  }
+
+  function selectSubject(subject) {
+    if (!SUBJECTS[subject] || subject === activeSubject) {
+      return;
+    }
+
+    activeSubject = subject;
+
+    if (isMckoActive()) {
+      activeMckoClass = getDefaultMckoClass();
+      activeMckoLevel = "basic";
+      activeMckoSection = getDefaultMckoSection({ grade: activeMckoClass, level: activeMckoLevel });
+    }
+
+    tasks = getActiveTaskSet();
+    activeNumber = getDefaultActiveNumber();
+    activeTextTopic = "";
     selectedTaskIds.clear();
     useExamTaskNumbers = false;
     closePrototypeOverlay();
@@ -3831,6 +4075,18 @@ function bindEvents() {
       }
 
       activateExam(button.dataset.exam);
+    });
+  }
+
+  if (subjectSwitch) {
+    subjectSwitch.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-subject]");
+
+      if (!button) {
+        return;
+      }
+
+      selectSubject(button.dataset.subject);
     });
   }
 
@@ -3898,6 +4154,13 @@ function bindEvents() {
   }
 
   document.addEventListener("click", (event) => {
+    const subjectLink = event.target.closest("[data-subject-link]");
+
+    if (subjectLink) {
+      selectSubject(subjectLink.dataset.subjectLink);
+      return;
+    }
+
     const link = event.target.closest("[data-exam-link]");
 
     if (!link) {
@@ -4044,7 +4307,6 @@ function loadTasks() {
 
       const loadedTasks = window[config.dataKey] || [];
       taskSets[exam] = normalizeLoadedTasks(loadedTasks, exam)
-        .filter((task) => String(task.subject).trim() === "Математика")
         .map((task) => ({
           ...task,
           exam,

@@ -21,7 +21,7 @@
           <span>Навигатор экзаменов</span>
         </a>
         <div class="topbar__links">
-          <a href="#subjects">Математика</a>
+          <a href="#subjects">Предметы</a>
           <a href="#catalog" data-exam-link="mcko">МЦКО</a>
           <a href="#catalog">ОГЭ и ЕГЭ</a>
           <a href="#print">PDF и печать</a>
@@ -32,11 +32,11 @@
 
       <section class="hero__grid" id="top">
         <div class="hero__content">
-          <p class="eyebrow">Банк прототипов по математике</p>
-          <h1>Выбирайте ОГЭ или ЕГЭ, отмечайте прототипы и собирайте PDF.</h1>
+          <p class="eyebrow">Банк прототипов по предметам</p>
+          <h1>Выбирайте предмет, экзамен, отмечайте прототипы и собирайте PDF.</h1>
           <p class="hero__lead">
-            В ОГЭ доступно 25 номеров, в ЕГЭ доступно 19 номеров.
-            Учитель может быстро собрать лист из нужных прототипов и распечатать его.
+            Математика уже подключена к ОГЭ, ЕГЭ и МЦКО. Русский язык добавлен как второй предмет:
+            его базу можно наполнять отдельно, не смешивая задания с математикой.
           </p>
           <div class="hero__actions">
             <a class="button button--primary" href="#catalog">Выбрать экзамен</a>
@@ -52,7 +52,7 @@
           <div class="progress-ring" aria-hidden="true">
             <span>78%</span>
           </div>
-          <p>Структура банка по математике</p>
+          <p>Структура банка по предметам</p>
           <div class="mini-bars" aria-label="Прогресс по разделам">
             <span style="--value: 100%">ОГЭ: 25 номеров</span>
             <span style="--value: 76%">ЕГЭ: 19 номеров</span>
@@ -66,10 +66,10 @@
       <section class="section subjects" id="subjects">
         <div class="section__heading">
           <p class="eyebrow">Предмет</p>
-          <h2>Сейчас сайт работает только с математикой</h2>
+          <h2>Выберите предмет</h2>
           <p>
-            Это упрощает базу и интерфейс: все задачи относятся к математике,
-            а главный выбор идет по экзамену и номеру задания.
+            Математика остается основным наполненным разделом. Русский язык уже подключен к интерфейсу,
+            поэтому его можно постепенно заполнять отдельными файлами заданий.
           </p>
         </div>
         <div class="subject-grid">
@@ -86,7 +86,12 @@
           <a class="subject-card subject-card--link" href="#catalog" data-exam-link="mcko">
             <span>МЦ</span>
             <h3>Математика МЦКО</h3>
-            <p>Диагностические материалы по классам: удобно отдельно собирать задания для 5-11 классов.</p>
+            <p>Диагностические материалы по классам: удобно отдельно собирать задания для 5-10 классов.</p>
+          </a>
+          <a class="subject-card subject-card--link" href="#catalog" data-subject-link="russian">
+            <span>РЯ</span>
+            <h3>Русский язык</h3>
+            <p>Разделы: МЦКО 5, 6, 7, 8, 10 классы; ОГЭ 9 класс; ЕГЭ 11 класс.</p>
           </a>
           <article class="subject-card">
             <span>2</span>
@@ -104,6 +109,7 @@
       <section class="section split" id="catalog">
         <div>
           <p class="eyebrow" id="catalogEyebrow">Номера ОГЭ</p>
+          <div class="subject-switch" id="subjectSwitch" aria-label="Выбор предмета"></div>
           <div class="exam-switch" id="examSwitch" aria-label="Выбор экзамена"></div>
           <div class="exam-subswitch" id="examSubswitch" aria-label="Выбор класса МЦКО"></div>
           <h2 id="catalogTitle">Выберите номер задания от 1 до 25</h2>
@@ -345,6 +351,17 @@
     <script src="mcko-tasks/grade-07/geometry-basic.js"></script>
     <script src="mcko-tasks/grade-07/geometry-advanced.js"></script>
     <script src="mcko-tasks/grade-08/algebra-advanced.js"></script>
+    <script src="mcko-tasks/grade-10/algebra-basic.js"></script>
+    <script src="russian-tasks/oge.js"></script>
+    <script src="russian-tasks/ege.js"></script>
+    <script src="russian-tasks/mcko.js"></script>
+    <script src="russian-tasks/mcko-05.js"></script>
+    <script src="russian-tasks/mcko-06.js"></script>
+    <script src="russian-tasks/mcko-07.js"></script>
+    <script src="russian-tasks/mcko-08.js"></script>
+    <script src="russian-tasks/mcko-10.js"></script>
+    <script src="russian-tasks/oge-09.js"></script>
+    <script src="russian-tasks/ege-11.js"></script>
     <script src="image-data.js"></script>
     <script src="lib/katex/katex.min.js"></script>
     <script src="exam-builder.js"></script>
