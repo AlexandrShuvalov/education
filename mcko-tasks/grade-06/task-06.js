@@ -299,7 +299,7 @@ window.MCKO_TASKS.push({
       "item_number": 21,
       "prompt": "Вычислите",
       "expression": "2\\frac{2}{3}:\\left(\\frac{3}{4}-\\frac{1}{4}\\right)+2\\cdot1\\frac{2}{3}",
-      "answer": "8\\frac{2}{3}",
+      "answer": "8",
       "solution": ""
     },
     {
