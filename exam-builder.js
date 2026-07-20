@@ -84,8 +84,8 @@ const EGE_LEVELS = [
     id: "base",
     label: "База",
     title: "Базовая математика ЕГЭ",
-    description: "Отдельный раздел для будущей базы заданий по базовой математике ЕГЭ.",
-    status: "Материалы скоро появятся",
+    description: "Отдельный раздел для заданий по базовой математике ЕГЭ. База не смешивается с профильной математикой.",
+    status: "База подключена",
   },
 ];
 const MCKO_CLASSES = [
@@ -409,6 +409,18 @@ function isEgeBaseActive() {
   return hasEgeLevelChoice() && activeEgeLevel === "base";
 }
 
+function getEgeTaskLevel(task) {
+  const source = String(task?.ege_level || task?.egeLevel || task?.exam_level || "")
+    .trim()
+    .toLowerCase();
+
+  if (["base", "basic", "база", "базовый", "базовая"].includes(source)) {
+    return "base";
+  }
+
+  return "profile";
+}
+
 function getMckoGrade(task) {
   return Number(task?.grade || task?.class || task?.mcko_class || 0);
 }
@@ -434,6 +446,10 @@ function getActiveTaskSet() {
 
       return !hasMckoSectionChoice() || getMckoTaskSection(task) === normalizeMckoSection(activeMckoSection);
     });
+  }
+
+  if (hasEgeLevelChoice()) {
+    return currentTasks.filter((task) => getEgeTaskLevel(task) === activeEgeLevel);
   }
 
   return currentTasks;
@@ -662,10 +678,6 @@ function getDefaultActiveNumber() {
     return getAvailableNumbers()[0] || 1;
   }
 
-  if (isEgeBaseActive()) {
-    return 1;
-  }
-
   if (isOgeTextGroupEnabled() && getOgeTextGroupCases().length) {
     ensureActiveTextTopic();
     return OGE_TEXT_GROUP_LABEL;
@@ -877,6 +889,10 @@ function formatChoiceContent(value) {
     return "";
   }
 
+  if (window.katex && /\\\([\s\S]*?\\\)/.test(text)) {
+    return renderDelimitedInlineKatex(text);
+  }
+
   if (window.katex && !/[А-Яа-яЁё]/.test(text)) {
     return renderKatexMath(text);
   }
@@ -886,6 +902,23 @@ function formatChoiceContent(value) {
   }
 
   return escapeHtml(text);
+}
+
+function renderDelimitedInlineKatex(text) {
+  const source = String(text || "");
+  const delimiterPattern = /\\\(([\s\S]*?)\\\)/g;
+  let result = "";
+  let lastIndex = 0;
+
+  for (const match of source.matchAll(delimiterPattern)) {
+    const index = match.index ?? 0;
+    result += renderTextWithInlineKatex(source.slice(lastIndex, index));
+    result += renderKatexMath(match[1]);
+    lastIndex = index + match[0].length;
+  }
+
+  result += renderTextWithInlineKatex(source.slice(lastIndex));
+  return renderInlineFractions(result);
 }
 
 function getTaskAnswerText(task) {
@@ -1729,7 +1762,7 @@ function renderPrototypeSheet(taskList, options = {}) {
   const isLongAnswerSheet = isLongAnswerNumber(sheetNumber);
   const isThreeColumnSheet = isThreeColumnNumber(sheetNumber);
   const isTwoColumnSheet = isTwoColumnNumber(sheetNumber);
-  const isOneColumnSheet = isOneColumnNumber(sheetNumber);
+  const isOneColumnSheet = isOneColumnNumber(sheetNumber) || taskList.some((task) => task.layout === "one-column");
   const taskSpecificClass = [
     isStatementSheet ? "prototype-sheet--statements" : "",
     isThreeColumnSheet ? "prototype-sheet--three-columns" : "",
@@ -2131,11 +2164,6 @@ function renderNumberGrid() {
     return;
   }
 
-  if (isEgeBaseActive()) {
-    taskNumberGrid.innerHTML = "";
-    return;
-  }
-
   const config = getExamConfig();
   const cards = [];
 
@@ -2328,7 +2356,7 @@ function renderExamSwitch() {
     } else if (isMckoActive()) {
       catalogDescription.textContent = "Сначала выберите класс в подпунктах ниже переключателя. Для 7-10 классов дополнительно выберите уровень, для 7, 8 и 10 классов - раздел алгебры или геометрии, затем номер задания справа.";
     } else if (isEgeBaseActive()) {
-      catalogDescription.textContent = "Подпункт для базовой математики ЕГЭ. Здесь можно будет подключить отдельную базу заданий, не смешивая ее с профильной.";
+      catalogDescription.textContent = "Выбран раздел базовой математики ЕГЭ. Номера и прототипы показываются отдельно от профильной базы.";
     } else if (hasEgeLevelChoice()) {
       catalogDescription.textContent = "Выбран профильный ЕГЭ. После выбора номера справа появятся все прототипы из базы. Отметьте галочками те задания, которые нужно добавить в PDF или распечатать.";
     } else if (isEgeActive() || !isOgeTextGroupEnabled()) {
@@ -2603,11 +2631,6 @@ function renderPrototypes() {
     return;
   }
 
-  if (isEgeBaseActive()) {
-    prototypeList.innerHTML = renderEgeBaseCatalog();
-    return;
-  }
-
   if (isOgeTextGroupActive()) {
     prototypeList.innerHTML = renderTextGroupCatalog();
     return;
@@ -2666,12 +2689,6 @@ function renderOverlayPrototypes() {
     overlayPrototypeList.innerHTML = prototypes.length
       ? renderPrototypeSheet(prototypes, { interactive: true })
       : renderMckoCatalog();
-    return;
-  }
-
-  if (isEgeBaseActive()) {
-    overlayTitle.textContent = "ЕГЭ. База";
-    overlayPrototypeList.innerHTML = renderEgeBaseCatalog();
     return;
   }
 
@@ -3937,11 +3954,6 @@ function getRandomGroupedTasks(taskList) {
 }
 
 function selectRandomVariant() {
-  if (isEgeBaseActive()) {
-    alert("Для базового ЕГЭ случайные варианты появятся после подключения отдельной базы заданий.");
-    return;
-  }
-
   const availableNumbers = Array.from({ length: getExamConfig().taskCount }, (_, index) => index + 1)
     .filter((number) => !(activeExam === "oge" && number >= 1 && number <= 5))
     .filter((number) => getTasksByNumber(number).length);

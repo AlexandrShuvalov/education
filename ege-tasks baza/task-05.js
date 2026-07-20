@@ -1,6 +1,6 @@
 window.EGE_TASKS = window.EGE_TASKS || [];
 window.EGE_TASKS.push(
-  {
+{
     id: "math-ege-004-p001",
     subject: "Математика",
     number: 4,
