@@ -1776,6 +1776,10 @@ function renderPrototypeSheet(taskList, options = {}) {
     return renderLongAnswerSheet(taskList, { interactive, showAnswers, className });
   }
 
+  if (sheetNumber === 2 && isEgeActive() && !isEgeBaseActive()) {
+    return renderStandaloneVectorSheet(taskList, { interactive, showAnswers, className });
+  }
+
   if (!isStatementSheet && hasVisualChoiceLayout(taskList)) {
     return renderVisualChoiceSheet(taskList, { interactive, showAnswers, className });
   }
@@ -1864,6 +1868,46 @@ function renderPrototypeSheet(taskList, options = {}) {
           })
           .join("")}
       </div>
+    </section>
+  `;
+}
+
+function renderStandaloneVectorSheet(taskList, options = {}) {
+  const { interactive = false, showAnswers = false, className = "prototype-sheet" } = options;
+
+  return `
+    <section class="${className} prototype-sheet--one-column">
+      <header class="prototype-sheet__header">
+        <h3>${getSheetTitle(taskList)}</h3>
+        <p>Каждое задание содержит собственные векторы и координаты.</p>
+      </header>
+      <div class="prototype-options prototype-options--standalone">
+        ${taskList
+          .map((task, taskIndex) => {
+            const checked = selectedTaskIds.has(task.id) ? " checked" : "";
+            const number = task.prototype || task.item_number || taskIndex + 1;
+            const content = `<span>${number})</span><strong>${escapeHtml(task.prompt || "")}</strong>`;
+
+            return `
+              <div class="prototype-option prototype-option--static prototype-option--standalone">
+                ${
+                  interactive
+                    ? `<label class="prototype-option__select"><input type="checkbox" value="${task.id}" data-task-checkbox${checked}>${content}</label>`
+                    : content
+                }
+                ${renderAnswerDetails(task)}
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+      ${
+        showAnswers
+          ? `<div class="prototype-solutions">${taskList
+              .map((task, taskIndex) => `<p><strong>${task.prototype || task.item_number || taskIndex + 1})</strong> Ответ: ${escapeHtml(task.answer || "")}. ${escapeHtml(task.solution || task.solution_raw || "")}</p>`)
+              .join("")}</div>`
+          : ""
+      }
     </section>
   `;
 }

@@ -1,3 +1,155 @@
 window.EGE_TASKS = window.EGE_TASKS || [];
 window.EGE_TASKS.push(
+  {
+  "subject": "Математика",
+  "number": 2,
+  "title": "Векторы",
+  "total_tasks": 11,
+  "ege_level": "profile",
+  "items": [
+    {
+      "id": "math-vector-012",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 1,
+      "prompt": "Даны векторы a=(1; 2) и b=(2; -1). Найдите длину вектора 6a+3b.",
+      "answer": "15",
+      "solution_raw": "6a + 3b = (12; 9), длина = sqrt(12^2 + 9^2) = sqrt(225) = 15"
+    },
+    {
+      "id": "math-vector-013",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 2,
+      "prompt": "Даны векторы a=(2; 2) и b=(2; -2). Найдите длину вектора 7a+b.",
+      "answer": "20",
+      "solution_raw": "7a + b = (16; 12), длина = sqrt(16^2 + 12^2) = sqrt(400) = 20"
+    },
+    {
+      "id": "math-vector-014",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 3,
+      "prompt": "Даны векторы a=(1; 3) и b=(3; -1). Найдите длину вектора 6a+2b.",
+      "answer": "20",
+      "solution_raw": "6a + 2b = (12; 16), длина = sqrt(12^2 + 16^2) = sqrt(400) = 20"
+    },
+    {
+      "id": "math-vector-015",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 2,
+      "item_number": 4,
+      "prompt": "Даны векторы a=(5; -7) и b=(14; 1). Найдите скалярное произведение a·b.",
+      "answer": "63",
+      "solution_raw": "5 * 14 + (-7) * 1 = 70 - 7 = 63"
+    },
+    {
+      "id": "math-vector-016",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 5,
+      "prompt": "Даны векторы a=(25; 0) и b=(1; -5). Найдите длину вектора a-4b.",
+      "answer": "29",
+      "solution_raw": "a - 4b = (21; 20), длина = sqrt(21^2 + 20^2) = sqrt(841) = 29"
+    },
+    {
+      "id": "math-vector-017",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 2,
+      "item_number": 6,
+      "prompt": "Даны векторы a=(-13; 4) и b=(-6; 1). Найдите скалярное произведение a·b.",
+      "answer": "82",
+      "solution_raw": "(-13) * (-6) + 4 * 1 = 78 + 4 = 82"
+    },
+    {
+      "id": "math-vector-018",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 7,
+      "prompt": "Даны векторы a=(1; 1) и b=(0; 7). Найдите длину вектора 8a+b.",
+      "answer": "17",
+      "solution_raw": "8a + b = (8; 15), длина = sqrt(8^2 + 15^2) = sqrt(289) = 17"
+    },
+    {
+      "id": "math-vector-019",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 3,
+      "item_number": 8,
+      "prompt": "Даны векторы a=(2; 1) и b=(2; -4). Найдите скалярное произведение векторов a+b и 7a-b.",
+      "answer": "15",
+      "solution_raw": "a + b = (4; -3), 7a - b = (12; 11). Скалярное произведение: 4 * 12 + (-3) * 11 = 48 - 33 = 15"
+    },
+    {
+      "id": "math-vector-020",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 2,
+      "item_number": 9,
+      "prompt": "Даны векторы a=(6; 4) и b=(5; -7). Найдите скалярное произведение a·b.",
+      "answer": "2",
+      "solution_raw": "6 * 5 + 4 * (-7) = 30 - 28 = 2"
+    },
+    {
+      "id": "math-vector-021",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 1,
+      "item_number": 10,
+      "prompt": "Даны векторы a=(1; 2) и b=(2; -1). Найдите длину вектора 8a+4b.",
+      "answer": "20",
+      "solution_raw": "8a + 4b = (16; 12), длина = sqrt(16^2 + 12^2) = sqrt(400) = 20"
+    },
+    {
+      "id": "math-vector-022",
+      "subject": "Математика",
+      "number": 2,
+      "title": "Векторы",
+      "block": "",
+      "page": 1,
+      "task_group": 2,
+      "item_number": 11,
+      "prompt": "Даны векторы a=(5; 3) и b=(4; -6). Найдите скалярное произведение a·b.",
+      "answer": "2",
+      "solution_raw": "5 * 4 + 3 * (-6) = 20 - 18 = 2"
+    }
+  ]
+}
 );
